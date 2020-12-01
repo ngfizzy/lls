@@ -1,15 +1,26 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
-import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import MemberPortal from './MemberPortal';
+import AdminPortal from './AdminPortal';
+import Login from './Login';
+import Signup from './Signup';
 
 function App() {
   return (
-    <div className="App">
-
-      <h1>Hello React</h1>
-      <Button>Hello World Button</Button>
-    </div>
+      <Router>
+        <div className="App">
+            <Switch>
+              <Route path="/" exact> <Redirect to="member" /> </Route>
+              <Route path="/member" component={MemberPortal} />
+              <Route path="/admin" component={AdminPortal} />
+              <Route path="/login" component={Login}/>
+              <Route path="/signup" component={Signup}/>
+              <Route path="*" render={() => <h1>Page Not found</h1>} />
+            </Switch>
+        </div>
+      </Router>
   );
 }
 
