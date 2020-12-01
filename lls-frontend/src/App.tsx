@@ -6,11 +6,14 @@ import MemberPortal from './MemberPortal';
 import AdminPortal from './AdminPortal';
 import Login from './Login';
 import Signup from './Signup';
+import { GeneralNavbar } from './shared';
 
 function App() {
   return (
       <Router>
         <div className="App">
+          <GeneralNavbar />
+
             <Switch>
               <Route path="/" exact> <Redirect to="member" /> </Route>
               <Route path="/member" component={MemberPortal} />
