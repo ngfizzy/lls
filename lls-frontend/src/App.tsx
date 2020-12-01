@@ -12,19 +12,17 @@ import { Container } from 'react-bootstrap';
 function App() {
   return (
       <Router>
-          <Container>
-        <div className="App">
-            <GeneralNavbar />
+          <Container className="App">
+              <GeneralNavbar />
 
-              <Switch>
-                <Route path="/" exact> <Redirect to="member" /> </Route>
-                <Route path="/member" component={MemberPortal} />
-                <Route path="/admin" component={AdminPortal} />
-                <Route path="/login" component={Login}/>
-                <Route path="/signup" component={Signup}/>
-                <Route path="*" render={() => <h1>Page Not found</h1>} />
-              </Switch>
-          </div>
+                <Switch>
+                  <Route path="/" exact> <Redirect to="member" /> </Route>
+                  <Route path="/member" component={MemberPortal} />
+                  <Route path="/admin" component={AdminPortal} />
+                  <Route path="/login" component={Login}/>
+                  <Route path="/signup" component={Signup}/>
+                  <Route path="*" render={() => <h1>Page Not found</h1>} />
+                </Switch>
           </Container>
       </Router>
   );

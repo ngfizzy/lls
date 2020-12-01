@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 export function GeneralNavbar() {
     return (
-        <Navbar bg="primary" className="text" expand="lg">
+      <Navbar bg="primary" className="text mb-2" expand="lg">
         <Navbar.Brand href="#home">
             <span className="text-light text-bold">LLS</span>
           </Navbar.Brand>
