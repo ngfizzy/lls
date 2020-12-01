@@ -7,16 +7,18 @@ import { Link } from 'react-router-dom'
 
 export function GeneralNavbar() {
     return (
-        <Navbar bg="primary" expand="lg">
-        <Navbar.Brand href="#home">LLS</Navbar.Brand>
+        <Navbar bg="primary" className="text" expand="lg">
+        <Navbar.Brand href="#home">
+            <span className="text-light text-bold">LLS</span>
+          </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
               <Nav.Link as={Link} to="admin">
-                 Admin
+                 <span className="text-light">Admin</span>
               </Nav.Link>
               <Nav.Link as={Link} to="member">
-                 Member 
+                 <span className="text-light">Member Poral</span>
               </Nav.Link>
 
             {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
@@ -27,12 +29,17 @@ export function GeneralNavbar() {
               <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
             </NavDropdown> */}
           </Nav>
-          <Form inline className="mr-2 border border-danger">
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-light" className="col-sm-12">Search</Button>
-          </Form>
           <Row>
-            <Button className="col-sm-12" variant="light" >Logout</Button>
+          <Form className="col-sm-12 col-md-7">
+            <Row>
+              <FormControl  type="text" placeholder="Search" className="col-sm-12 col-md-7" />
+              <div className="col-sm-12 col-md-3">
+                <Button  variant="outline-light" >Search</Button>
+              </div>
+
+           </Row>
+          </Form>
+            <Button className="col-sm-12 col-md-3" variant="secondary">Logout</Button>
           </Row>
         </Navbar.Collapse>
       </Navbar>
