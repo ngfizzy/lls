@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Form, FormControl } from 'react-bootstrap'
+import { Button, Form, FormControl, Row } from 'react-bootstrap'
 import Nav from 'react-bootstrap/esm/Nav'
 import Navbar from 'react-bootstrap/esm/Navbar'
 // import NavDropdown from 'react-bootstrap/esm/NavDropdown'
@@ -27,11 +27,13 @@ export function GeneralNavbar() {
               <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
             </NavDropdown> */}
           </Nav>
-          <Form inline className="mr-2">
+          <Form inline className="mr-2 border border-danger">
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-light">Search</Button>
+            <Button variant="outline-light" className="col-sm-12">Search</Button>
           </Form>
-          <Button variant="light" >Logout</Button>
+          <Row>
+            <Button className="col-sm-12" variant="light" >Logout</Button>
+          </Row>
         </Navbar.Collapse>
       </Navbar>
     )
