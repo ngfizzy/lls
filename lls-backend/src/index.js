@@ -1,8 +1,8 @@
-import express, { Response, Request } from 'express';
-import cors from 'cors';
+const express  = require('express');
+const  cors = require('cors');
 
-import { Books} from './data/Books';
-import { UserBorrows } from './data/UserBorrows';
+const { Books }  = require('./data/Books');
+const { UserBorrows } = require('./data/UserBorrows');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -11,7 +11,7 @@ const PRIVATE_IP = process.env.PRIVATE_IP;
 app.use(cors());
 app.use(express.json())
 
-app.get('/api/books', (_, res:  Response) => {
+app.get('/api/books', (_, res) => {
     res.json({
         message: 'Books Fetched Successfully',
         books: Books,
@@ -26,7 +26,7 @@ app.get('/api/users/:id/borrows', (_, res) => {
     });
 });
 
-app.post('/api/books', (req: Request, res: Response) => {
+app.post('/api/books', (req, res) => {
     Books.unshift(req.body)
     return res.json({
         message: 'Book Added Successfully',
@@ -34,7 +34,7 @@ app.post('/api/books', (req: Request, res: Response) => {
     })
 });
 
-app.get('*', (_, res: Response) => {
+app.get('*', (_, res) => {
     return res.json({ message: 'hello world'});
 });
 
@@ -43,7 +43,7 @@ app.listen(PORT, () => (console.log(`App running on port: ${PORT} 🚀`)))
 if(PRIVATE_IP) {
 
     app.listen(
-        PORT as number,
+        PORT,
         PRIVATE_IP,
         () => (console.log(`App running on port: ${PORT} 🚀`))
     )

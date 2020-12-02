@@ -1,6 +1,5 @@
-import { IBook } from '../../../models';
 
-export const Books: IBook[] = [
+module.exports.Books = [
     {
         cover: '',
         title: 'The Silent Patient',
@@ -35,6 +34,7 @@ Theo Faber is a criminal psychotherapist who has waited a long time for the oppo
         copies: 4,
     },
     {
+        id: '3',
         cover: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1512705866l/30257963.jpg',
         title: '12 Rules for Life: An Antidote to Chaos',
         author: 'Jordan B. Peterson',

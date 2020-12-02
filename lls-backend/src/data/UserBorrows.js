@@ -1,6 +1,5 @@
-import { IUserBorrow } from '../../../models'
 
-export const UserBorrows: IUserBorrow[]  = [
+module.exports.UserBorrows = [
     {
         book: {
             cover: '',
@@ -84,4 +83,4 @@ export const UserBorrows: IUserBorrow[]  = [
         requestedOn: new Date('12/01/2020'),
         expiresOn: new Date('12/05/2020'),
     },
-]
+];
