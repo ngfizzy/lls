@@ -6,6 +6,7 @@ interface Props {
     title: string;
     show: boolean;
     size?: ModalProps["size"];
+    controls?: 'closeOnly'
     handleClose: () => void;
 }
 
@@ -14,7 +15,8 @@ export const GeneralModal: FC<Props> = ({
     show,
     handleClose,
     children,
-    size
+    size,
+    controls
 }) => (
       <Modal size={size}show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -25,9 +27,10 @@ export const GeneralModal: FC<Props> = ({
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          {controls !== 'closeOnly' ?
+            <Button variant="primary" onClick={handleClose}>
             Save Changes
-          </Button>
+          </Button>: null}
         </Modal.Footer>
         </Modal>
     );

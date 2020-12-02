@@ -18,12 +18,12 @@ export const Book: FC<Props> = ({book, showBook})  =>{
             <Card.Body>
                 <div style={{ height: '78%'}}>
 
-                    <Card.Title title={book.title}>
-                        {withEllipsis(<span>{book.title}</span>, { fontSize: '1.1rem'})}
+                    <Card.Title title={book?.title}>
+                        {withEllipsis(<span>{book?.title}</span>, { fontSize: '1.1rem'})}
                     </Card.Title>
      
                     <Card.Text>
-                        {book.summary.substr(0,79) + '...'}
+                        {(book.summary|| '').substr(0,79) + '...'}
                     </Card.Text>
                 </div>
                 <Button className="mr-1" variant="secondary" onClick={() => showBook({book})}>View Full</Button>

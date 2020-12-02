@@ -1,4 +1,4 @@
-import express, { Response } from 'express';
+import express, { Response, Request } from 'express';
 import cors from 'cors';
 
 import { Books} from './data/Books';
@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 8080;
 const PRIVATE_IP = process.env.PRIVATE_IP;
 
 app.use(cors());
+app.use(express.json())
 
 app.get('/api/books', (_, res:  Response) => {
     res.json({
@@ -23,6 +24,14 @@ app.get('/api/users/:id/borrows', (_, res) => {
         message: 'User\'s Borrowed Books Fetched Successfully',
         borrows: UserBorrows
     });
+});
+
+app.post('/api/books', (req: Request, res: Response) => {
+    Books.unshift(req.body)
+    return res.json({
+        message: 'Book Added Successfully',
+        book: req.body,
+    })
 });
 
 app.get('*', (_, res: Response) => {

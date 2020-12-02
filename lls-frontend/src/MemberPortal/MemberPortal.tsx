@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Row } from 'react-bootstrap'
 import { IUserBorrow } from '../../../models'
 import { GeneralModal } from '../shared'
-import Api from './api'
+import Api from '../api'
 
-import AllBooks from './components/AllBooks/AllBooks'
-import BorrowedBooks from './components/BorrowedBooks/BorrowedBooks'
+import {AllBooks} from '../shared';
+import {BorrowedBooks} from '../shared'
 
 import './MemberPortal.css'
 export default function MemberPortal() {
@@ -16,8 +16,6 @@ export default function MemberPortal() {
     const [error, setError] = useState('');
 
     const [showModal, setShowModal] = useState(false);
-
-
     const [selectedBook, setSelectedBook] = useState<Partial<IUserBorrow>>();
 
 
@@ -26,7 +24,6 @@ export default function MemberPortal() {
         setShowModal(true);
         setSelectedBook(fullBook);
     }
-
 
     console.log(isLoading, error);
     useEffect(() => {

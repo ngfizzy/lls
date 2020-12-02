@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import { Col, ListGroup } from 'react-bootstrap'
-import { IUserBorrow } from '../../../../../models';
-import withEllipsis from '../../../shared/HOCs/withElipsis';
-import {SectionTitle} from '../../../shared';
+import { IUserBorrow } from '../../../../models';
+import withEllipsis from '../HOCs/withElipsis';
+import {SectionTitle} from '..';
 import './BorrowedBooks.css';
 
 
@@ -13,7 +13,7 @@ interface Props {
   showBookDetails: (arg: Partial<IUserBorrow>) => any;
 }
 
-const BorrowedBooks: FC<Props> = ({ borrows, showBookDetails }) => {
+export const BorrowedBooks: FC<Props> = ({ borrows, showBookDetails }) => {
     return (
     <Col
       as={'aside'}
@@ -40,6 +40,3 @@ const BorrowedBooks: FC<Props> = ({ borrows, showBookDetails }) => {
     </Col>
     )
 }
-
-
-export default BorrowedBooks;

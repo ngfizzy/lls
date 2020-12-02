@@ -14,7 +14,6 @@ function App() {
       <Router>
           <Container className="App">
               <GeneralNavbar />
-
                 <Switch>
                   <Route path="/" exact> <Redirect to="member" /> </Route>
                   <Route path="/member" component={MemberPortal} />

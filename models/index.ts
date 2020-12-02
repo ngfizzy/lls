@@ -12,6 +12,13 @@ export interface IBook  {
 export interface IUserBorrow  {
     book: IBook;
     requestedOn: Date;
+    rejectedOn?: Date
     approvedOn?: Date;
     expiresOn: Date;
 }
+
+
+export type FormState =  'submitting'|
+'submitted' |
+'pristine' |
+'error'
