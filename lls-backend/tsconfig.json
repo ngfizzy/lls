@@ -32,6 +32,6 @@
   ],
   "include": [
     "./src/**/*.tsx",
-    "./src/**/*.ts", "src/data/models/book.js", "src/data/models/user.js", "src/index.js", "src/data/Books.js", "src/data/UserBorrows.js"
+    "./src/**/*.ts", "src/models/book.js", "src/models/user.js", "src/index.js", "src/data/Books.js", "src/data/UserBorrows.js"
   ]
 }

@@ -11,12 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Loan);
+      this.belongsToMany(models.Author, { through: 'AuthorsBooks' });
     }
   };
   Book.init({
     cover: DataTypes.STRING,
     title: DataTypes.STRING,
-    author: DataTypes.STRING,
     description: DataTypes.STRING,
     summary: DataTypes.STRING,
     copies: DataTypes.INTEGER,
