@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
-import SectionTitle from '../../../shared/SectionTitle/SectionTitle'
+import { IBook } from '../../../../../models';
+import {SectionTitle} from '../../../shared';
 
 import Api from '../../api';
 import Book from '../Book/Book';
 
-export default function AllBooks() {
+interface Props {
+    showBookDetails: (arg: {book: IBook}) => any;
+}
+
+const AllBooks: FC<Props> =  ({ showBookDetails })  => {
     const [books, setBooks] = useState([])
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -36,12 +41,14 @@ export default function AllBooks() {
 
         <Row>
             {books.map(book => (
-                <Col xs={12} sm={6} lg={4} className="mb-3">
-                    <Book book={book} />
+                <Col xs={12} sm={6} lg={4} className="mb-3" >
+                    <Book book={book} showBook={showBookDetails}/>
                 </Col>
             ))}
-        </Row>
-    
+        </Row> 
     </Col>
     )
 }
+
+
+export default AllBooks;

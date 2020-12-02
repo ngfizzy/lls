@@ -2,17 +2,18 @@ import React, { FC } from 'react'
 import { Col, ListGroup } from 'react-bootstrap'
 import { IUserBorrow } from '../../../../../models';
 import withEllipsis from '../../../shared/HOCs/withElipsis';
-import SectionTitle from '../../../shared/SectionTitle/SectionTitle';
+import {SectionTitle} from '../../../shared';
 import './BorrowedBooks.css';
 
 
 
 
 interface Props {
-  borrows: IUserBorrow[]
+  borrows: IUserBorrow[];
+  showBookDetails: (arg: Partial<IUserBorrow>) => any;
 }
 
-const BorrowedBooks: FC<Props> = ({ borrows }) => {
+const BorrowedBooks: FC<Props> = ({ borrows, showBookDetails }) => {
     return (
     <Col
       as={'aside'}
@@ -24,7 +25,11 @@ const BorrowedBooks: FC<Props> = ({ borrows }) => {
 
       <ListGroup>
         {
-          borrows.map((borrow, i) => (<ListGroup.Item style={{cursor: 'pointer'}} key={i}>{
+          borrows.map((borrow, i) => (<ListGroup.Item
+              style={{cursor: 'pointer'}}
+              key={i}
+              onClick={() =>  showBookDetails(borrows[i])}
+              >{
               withEllipsis(
                 <span>{borrow.book.title}</span>
               )
