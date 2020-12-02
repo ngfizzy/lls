@@ -1,12 +1,15 @@
-export interface IBook  {
+export interface IBook {
+    id: number;
     cover: string;
     title: string;
-    author: string;
+    authorId: number
     description: string;
+    copies: number
+    ebook: boolean;
     summary: string;
-    ebook?: boolean;
-    copies?: number;
-}
+    createdAt: Date;
+    updatedAt: Date;
+  }
 
 
 export interface IUserBorrow  {

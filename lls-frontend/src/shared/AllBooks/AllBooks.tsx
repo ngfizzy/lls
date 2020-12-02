@@ -5,39 +5,29 @@ import { IBook } from '../../../../models';
 import Api from '../../api';
 import {Book} from '..';
 import { Section } from '../Section/Section';
+import { fetchAllBooks } from '../../helpers';
 
 interface Props {
     showBookDetails: (arg: {book: IBook}) => any;
     refetch?: boolean;
+    adminView?: boolean;
 }
 
-
-
-
-export const AllBooks: FC<Props> =  ({ showBookDetails, refetch })  => {
+export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView })  => {
     const [books, setBooks] = useState<IBook[]>([])
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
     console.log(isLoading, error)
 
-    const fetchAllBooks = () => {
-        Api.getAllBooks()
-        .then(({data}) => {
-            setIsLoading(false);
-            setBooks(data.books);
-        })
-        .catch(error => {
-            setIsLoading(false);
-            setError(error.message)
-        });
-    }
-    useEffect(() => fetchAllBooks(), []);
+    useEffect(() => {
+        fetchAllBooks({setBooks, setIsLoading, setError})
+    }, []);
     useEffect(() => {
         if (refetch) {
-            fetchAllBooks()
+            fetchAllBooks({setBooks, setIsLoading, setError});
         }
-    }, [refetch])
+    }, [refetch, books]);
 
     return (
         <Section
@@ -50,7 +40,12 @@ export const AllBooks: FC<Props> =  ({ showBookDetails, refetch })  => {
         <Row>
             {books.map((book, i) => (
                 <Col xs={12} sm={6} lg={4} className="mb-3" key={i}>
-                    <Book book={book} showBook={showBookDetails}/>
+                    <Book
+                        isAdmin={adminView}
+                        book={book}
+                        showBook={showBookDetails}
+                        deleteBook={() => deleteBook()}
+                    />
                 </Col>
             ))}
         </Row> 

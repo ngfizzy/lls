@@ -14,7 +14,6 @@ export default function AdminPortal() {
     const [selectedBook, setSelectedBook] = useState<Partial<IUserBorrow>>();
     const [isBookFormOpen, setIsBookFormOpen] = useState(false)
     const [refetchBooks, setRefetchBooks] = useState(false)
-
     const [addBookState, setAddBookState]  = useState<FormState>('pristine')
 
 
@@ -25,10 +24,7 @@ export default function AdminPortal() {
     }
     const handleBookAddition = async (e: React.SyntheticEvent<Element, Event>, book: Partial<IBook>) => {
         e.preventDefault();
-
-
-        console.log(book)
-
+    
         try {
            await Api.addBook(book as IBook)
                 .then(res => {
@@ -47,6 +43,7 @@ export default function AdminPortal() {
     }
 
     console.log(isLoading, error);
+
     useEffect(() => {
         Api.getBorrows()
             .then(({data}) => {
@@ -77,6 +74,7 @@ export default function AdminPortal() {
                 showBookDetails={handleShowModal}
             />
             <AllBooks
+                adminView={true}
                 showBookDetails={handleShowModal}
                 refetch={refetchBooks}
             />
@@ -90,7 +88,7 @@ export default function AdminPortal() {
                 <div>{JSON.stringify(selectedBook)}</div>
             </GeneralModal>
 
-            <GeneralModal 
+            <GeneralModal
                 handleClose={() => setIsBookFormOpen(false)} 
                 title="Add New Book"
                 show={isBookFormOpen}
