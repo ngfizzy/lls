@@ -1,14 +1,14 @@
 import React, { FC } from 'react'
 import { Button, Card } from 'react-bootstrap'
-import { IBook } from '../../../../../models';
-import { bookDefaultImage } from '../../../constants';
-import withEllipsis from '../../../shared/HOCs/withElipsis';
+import { IBook } from '../../../../models';
+import { bookDefaultImage } from '../../constants';
+import withEllipsis from '../HOCs/withElipsis';
 interface Props {
     book: IBook;
     showBook: (arg: { book: IBook}) => any
 }
 
-const Book: FC<Props> = ({book, showBook})  =>{
+export const Book: FC<Props> = ({book, showBook})  =>{
     return (
         <Card 
             style={{ height: '30rem', overflow: 'hidden'}}
@@ -33,4 +33,3 @@ const Book: FC<Props> = ({book, showBook})  =>{
     )
 }
 
-export default Book;

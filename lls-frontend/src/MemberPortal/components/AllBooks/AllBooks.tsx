@@ -4,7 +4,7 @@ import { IBook } from '../../../../../models';
 import {SectionTitle} from '../../../shared';
 
 import Api from '../../api';
-import Book from '../Book/Book';
+import {Book} from '../../../shared/';
 
 interface Props {
     showBookDetails: (arg: {book: IBook}) => any;
