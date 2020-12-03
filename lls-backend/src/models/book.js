@@ -1,7 +1,8 @@
 'use strict';
 const {
   Model
-} = import('sequelize');
+} = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
     /**

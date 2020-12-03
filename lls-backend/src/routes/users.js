@@ -7,7 +7,7 @@ const author = require('../models/author');
 const router = Router();
 
 router.post('/signup', async (req, res) => {
-    const { body } = req.body;
+    const { body } = req;
     
     const result = await usersController.signup(body);
 
@@ -15,7 +15,7 @@ router.post('/signup', async (req, res) => {
         return jwt.sign(
             {user: result.user},
             process.env.JWT_SECRET,
-        
+
             (err, token) => {
                 if(err) {
                     return res.status(500).json({
@@ -27,7 +27,6 @@ router.post('/signup', async (req, res) => {
                     return res.status(201).json(result);
                 }
             }
-            
         );
     } else {
         return res.status(400).json(result);
@@ -35,9 +34,8 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    const { body: { email, password }} = req.body;
+    const { body: { email, password }} = req;
 
-  
     const result = await usersController.login({email, password});
 
     if(!result.error) {

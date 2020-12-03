@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { IBook } from '../../../../models';
 
-import Api from '../../api';
 import {Book} from '..';
 import { Section } from '../Section/Section';
 import { fetchAllBooks } from '../../helpers';
@@ -44,7 +43,7 @@ export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView })  =
                         isAdmin={adminView}
                         book={book}
                         showBook={showBookDetails}
-                        deleteBook={() => deleteBook()}
+                        deleteBook={() => {}}
                     />
                 </Col>
             ))}

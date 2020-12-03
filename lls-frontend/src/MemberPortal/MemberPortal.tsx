@@ -25,7 +25,7 @@ export default function MemberPortal() {
         setSelectedBook(fullBook);
     }
 
-    console.log(isLoading, error);
+    console.log(isLoading, error)
     useEffect(() => {
         Api.getBorrows()
             .then(({data}) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Button, Row } from 'react-bootstrap'
 import {FormState, IBook, IUserBorrow } from '../../../models';
 import Api from '../api';
@@ -6,7 +6,8 @@ import { AllBooks, BorrowedBooks, GeneralModal } from '../shared';
 import { Section } from '../shared/Section/Section';
 import BookForm from './components/BookForm/BookForm';
 
-export default function AdminPortal() {
+
+ const AdminPortal: FC<{isAdmin: boolean}> = ({isAdmin}) => {
     const [borrows, setBorrows] = useState<IUserBorrow[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -16,49 +17,46 @@ export default function AdminPortal() {
     const [refetchBooks, setRefetchBooks] = useState(false)
     const [addBookState, setAddBookState]  = useState<FormState>('pristine')
 
-
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = (fullBook: Partial<IUserBorrow>) => {
         setShowModal(true);
         setSelectedBook(fullBook);
     }
+
+    console.log(isLoading)
     const handleBookAddition = async (e: React.SyntheticEvent<Element, Event>, book: Partial<IBook>) => {
         e.preventDefault();
-    
+        
         try {
-           await Api.addBook(book as IBook)
-                .then(res => {
-                    setAddBookState('submitted');
-                    setIsBookFormOpen(false);
-                    setRefetchBooks(() => true);
-                    setRefetchBooks(() => false)
-                })
+            await Api.addBook(book as IBook)
+            .then(res => {
+                setAddBookState('submitted');
+                setIsBookFormOpen(false);
+                setRefetchBooks(() => true);
+                setRefetchBooks(() => false)
+            })
         } catch(e) {
             setError(e.message);
             setAddBookState('error');
             setRefetchBooks(() => false);
         } 
-
-        
     }
-
-    console.log(isLoading, error);
-
+    
+    
     useEffect(() => {
         Api.getBorrows()
-            .then(({data}) => {
-                setBorrows(data.borrows)
-                setIsLoading(false)
-                setAddBookState('submitted')
-            })
-            .catch(error => {
-                setError(error.message);
-                setIsLoading(false);
-                setAddBookState('error')
-            });
-    }, [])
-
-
+        .then(({data}) => {
+            setBorrows(data.borrows)
+            setIsLoading(false)
+            setAddBookState('submitted')
+        })
+        .catch(error => {
+            setError(error.message);
+            setIsLoading(false);
+            setAddBookState('error')
+        });
+    }, []);
+    
     
     return ( 
         <>
@@ -74,7 +72,7 @@ export default function AdminPortal() {
                 showBookDetails={handleShowModal}
             />
             <AllBooks
-                adminView={true}
+                adminView={isAdmin}
                 showBookDetails={handleShowModal}
                 refetch={refetchBooks}
             />
@@ -104,5 +102,7 @@ export default function AdminPortal() {
         </Row>
         </>
         )
-
 }
+
+
+export default AdminPortal;

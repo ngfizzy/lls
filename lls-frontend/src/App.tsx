@@ -8,6 +8,8 @@ import Login from './Login';
 import Signup from './Signup';
 import { GeneralNavbar } from './shared';
 import { Container } from 'react-bootstrap';
+import AdminRoute from './shared/AdminRoute/AdminRoute';
+import MemberRoute from './shared/MemberRoute/MemberRoute';
 
 function App() {
   return (
@@ -16,8 +18,8 @@ function App() {
               <GeneralNavbar />
                 <Switch>
                   <Route path="/" exact> <Redirect to="member" /> </Route>
-                  <Route path="/member" component={MemberPortal} />
-                  <Route path="/admin" component={AdminPortal} />
+                  <MemberRoute path="/member" component={MemberPortal} />
+                  <AdminRoute path="/admin" component={AdminPortal} />
                   <Route path="/login" component={Login}/>
                   <Route path="/signup" component={Signup}/>
                   <Route path="*" render={() => <h1>Page Not found</h1>} />

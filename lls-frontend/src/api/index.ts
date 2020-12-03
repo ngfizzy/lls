@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { IBook } from '../../../models';
+import { IBook, IUser } from '../../../models';
 
-class MemberApiFacade {
+class ApiFacade {
 
-    private apiBaseUrl = 'http://192.168.8.103:8080/api'
+    private apiBaseUrl = 'http://localhost:8080/api'
 
     getAllBooks() {
         return axios({
@@ -26,6 +26,22 @@ class MemberApiFacade {
             data: book
         });
     }
+
+    signup(user: Partial<IUser>) {
+        return axios({
+            url: `${this.apiBaseUrl}/auth/signup`,
+            method: `POST`,
+            data:  user,
+        })
+    }
+
+    login(user: Partial<IUser>) {
+        return axios({
+            url: `${this.apiBaseUrl}/auth/login`,
+            method: `POST`,
+            data:  user,
+        })
+    }
 }
 
-export default new MemberApiFacade();
+export default new ApiFacade();

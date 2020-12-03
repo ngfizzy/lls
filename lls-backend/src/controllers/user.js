@@ -1,21 +1,30 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const User = require('../models/user');
+const {User} = require('../models');
 
 module.exports = {
     async signup(payload) {
         try {
             const {password} = payload;
-            const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUND);
+            const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUND));
 
             payload.password = hashedPassword;
+            payload.role = 'member';
 
-            const user = await User.create(payload);
-            
+            let user = await User.findOne({where: {email: payload.email}});
+
+            if(user) {
+                return {
+                    error:true,
+                    message: 'Account already exists',
+                };
+            }
+
+           user = await User.create(payload);            
 
             return {
-                user,
+                user: user.toJSON(),
                 message: 'Sign up successful',
                 error: false
             };
@@ -34,9 +43,8 @@ module.exports = {
             error: true,
         };
 
-
         try {
-            const user = await User.findOne({email});
+            const user = await User.findOne({where: {email}});
             const canLogin = await bcrypt.compare(password, user.password);
 
             if(canLogin) {
@@ -44,6 +52,7 @@ module.exports = {
 
                 return {
                     token,
+                    user,
                     message: 'Login Successfully',
                     error: false
                 }

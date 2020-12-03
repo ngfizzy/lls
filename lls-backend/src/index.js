@@ -8,9 +8,8 @@ const userRoutes = require('./routes/users');
 require('dotenv').config();
 
 
-const { Sequelize } = require('sequelize');
+const sequelize = require('./sequelize/sequelize');
 
-const sequelize = new Sequelize(process.env.DB_URL);
 
 (async () => {
     try {
@@ -28,7 +27,7 @@ const PRIVATE_IP = process.env.PRIVATE_IP;
 app.use(cors());
 app.use(express.json());
 
-app.use('/auth', userRoutes);
+app.use('/api/auth', userRoutes);
 
 app.get('/api/books', (_, res) => {
     res.json({

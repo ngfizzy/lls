@@ -9,8 +9,23 @@ export interface IBook {
     summary: string;
     createdAt: Date;
     updatedAt: Date;
-  }
+    authors: IAuthor[]
+}
 
+export interface IAuthor {
+    id: number;
+    name: string;
+}
+
+
+export interface IUser {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string
+    roles: 'admin' | 'member' | null;
+}
 
 export interface IUserBorrow  {
     book: IBook;
