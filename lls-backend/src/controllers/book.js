@@ -15,7 +15,23 @@ module.exports =  {
             return {
                 message: error.message,
                 error: true,
-            }
+            };
         }
+    },
+    async getAllBooks() {
+        try {
+            const books = await Book.findAll()
+  
+              return {
+                  books: book.toJSON(),
+                  message: 'Book fetched successfully',
+                  error: false,
+              };
+          } catch(error) {
+              return {
+                  message: error.message,
+                  error: true,
+              };
+          }
     }
 }

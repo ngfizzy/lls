@@ -24,6 +24,14 @@ const BookForm: FC<Props> = ({ handleSubmit, formState, error }) => {
         });
     }
 
+    const handleCheck = (e: React.FormEvent<HTMLInputElement>) => {
+        setBook(prevBook => {
+            return {
+                ...prevBook,
+                ebook: JSON.parse((e.target as HTMLInputElement).value),
+            }
+        });
+    }
     return (
         <Form className="p-2 bg-light rounded" onSubmit={e => handleSubmit(e, book)}>
             {formState === 'error' ? <Alert variant="warning">{error}</Alert> : null}
@@ -44,7 +52,7 @@ const BookForm: FC<Props> = ({ handleSubmit, formState, error }) => {
                 <Form.Label>Author</Form.Label>
                 <Form.Control 
                     onChange={e => handleOnChange(e)}
-                    value={book?.authors![0].name || ''} type="text" placeholder="Author's Name" />
+                    value={''} type="text" placeholder="Author's Name" />
             </Form.Group>
 
             <Form.Group controlId="description">
@@ -68,6 +76,11 @@ const BookForm: FC<Props> = ({ handleSubmit, formState, error }) => {
                     value={book.copies || 1} type="number" placeholder="Number of Copies" />
             </Form.Group>
 
+            <Form.Group controlId="ebook">
+                <Form.Group controlId="formBasicCheckbox">
+                <Form.Check type="checkbox" value={`${book.ebook}`} checked={!!book.ebook} label="Ebook" onChange={e => handleCheck(e)} />
+            </Form.Group>
+            </Form.Group>
             <Button className="p-inline-block w-100" variant="primary" type="submit">
                 Add
             </Button>
