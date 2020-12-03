@@ -3,7 +3,7 @@ const  cors = require('cors');
 
 const { Books }  = require('./data/Books');
 const { UserBorrows } = require('./data/UserBorrows');
-const userRoutes = require('./routes/users');
+const routes = require('./routes/');
 
 require('dotenv').config();
 
@@ -27,29 +27,14 @@ const PRIVATE_IP = process.env.PRIVATE_IP;
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth', userRoutes);
-
-app.get('/api/books', (_, res) => {
-    res.json({
-        message: 'Books Fetched Successfully',
-        books: Books,
-        error: false
-    })
-});
+app.use('/api/auth', routes.userRoutes);
+app.get('/api/books', routes.bookRoutes);
 
 app.get('/api/users/:id/borrows', (_, res) => {
     return res.json({
         message: 'User\'s Borrowed Books Fetched Successfully',
         borrows: UserBorrows
     });
-});
-
-app.post('/api/books', (req, res) => {
-    Books.unshift(req.body)
-    return res.json({
-        message: 'Book Added Successfully',
-        book: req.body,
-    })
 });
 
 
