@@ -24,7 +24,8 @@ class ApiFacade {
         return axios({
             url: `${this.apiBaseUrl}/books`,
             method: 'POST',
-            data: book
+            data: book,
+            headers: { authorization: localStorage.getItem('token')}
         });
     }
 

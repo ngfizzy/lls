@@ -1,10 +1,10 @@
 const { Router } = require('express');
 
 const bookController = require('../controllers/book');
-
+const adminMiddleWare = require('../custom-middleware/admin-auth-middleware')
 const router = Router();
 
-router.post('/', async (req, res) => {
+router.post('/', adminMiddleWare, async (req, res) => {
     const { body } = req;
 
     try {
@@ -25,8 +25,6 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async(_, res) => {
-    console.log(">>>>>>>>>Header>>>>>>>>>>>>>>>>>>>>", _.header.user)
-
     try {
         const result = await bookController.getAllBooks();
 
