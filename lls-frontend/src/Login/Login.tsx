@@ -17,8 +17,7 @@ export default function Login() {
 
     useEffect(() => {   
 
-                localStorage.setItem('token', `Bearer ${token}`);
-
+            localStorage.setItem('token', `Bearer ${token}`);
             localStorage.setItem('isAdmin', JSON.stringify(user.roles === 'admin'));
             localStorage.setItem('userId', `${user.id}`);
     },[token, user])

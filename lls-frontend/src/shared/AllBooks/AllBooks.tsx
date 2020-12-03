@@ -12,6 +12,7 @@ interface Props {
     adminView?: boolean;
 }
 
+
 export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView })  => {
     const [books, setBooks] = useState<IBook[]>([])
     const [isLoading, setIsLoading] = useState(true);

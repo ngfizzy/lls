@@ -48,11 +48,11 @@ const BookForm: FC<Props> = ({ handleSubmit, formState, error }) => {
                     onChange={e => handleOnChange(e)}
                     value={book.cover || ''} type="text" placeholder="Book Cover Url" />
             </Form.Group>
-            <Form.Group controlId="author">
+            <Form.Group controlId="authorName">
                 <Form.Label>Author</Form.Label>
                 <Form.Control 
                     onChange={e => handleOnChange(e)}
-                    value={''} type="text" placeholder="Author's Name" />
+                    value={book.authorName || ''} type="text" placeholder="Author's Name" />
             </Form.Group>
 
             <Form.Group controlId="description">

@@ -16,7 +16,3 @@ export const fetchAllBooks = (stateSetters: {
             stateSetters.setError(error.message)
         });
 }
-
-// export const deleteBook = (stateSetters: IBook) => {
-//     return Api.deleteBook
-// }

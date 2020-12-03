@@ -29,7 +29,7 @@ import BookForm from './components/BookForm/BookForm';
         
         try {
             await Api.addBook(book as IBook)
-            .then(res => {
+            .then(_ => {
                 setAddBookState('submitted');
                 setIsBookFormOpen(false);
                 setRefetchBooks(() => true);
@@ -41,7 +41,6 @@ import BookForm from './components/BookForm/BookForm';
             setRefetchBooks(() => false);
         } 
     }
-    
     
     useEffect(() => {
         Api.getBorrows()

@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', routes.userRoutes);
-app.get('/api/books', routes.bookRoutes);
+app.use('/api/books', routes.bookRoutes);
 
 app.get('/api/users/:id/borrows', (_, res) => {
     return res.json({

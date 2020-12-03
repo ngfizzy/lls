@@ -2,8 +2,6 @@ const { Router } = require('express');
 
 const bookController = require('../controllers/book');
 
-
-
 const router = Router();
 
 router.post('/', async (req, res) => {

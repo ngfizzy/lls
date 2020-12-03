@@ -10,6 +10,7 @@ export interface IBook {
     createdAt: Date;
     updatedAt: Date;
     authors: IAuthor[]
+    authorName?: string
 }
 
 export interface IAuthor {
