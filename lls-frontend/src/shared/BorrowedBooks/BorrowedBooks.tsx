@@ -6,8 +6,6 @@ import {SectionTitle} from '..';
 import './BorrowedBooks.css';
 
 
-
-
 interface Props {
   borrows: IUserBorrow[];
   showBookDetails: (arg: Partial<IUserBorrow>) => any;

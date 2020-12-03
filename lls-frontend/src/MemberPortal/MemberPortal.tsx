@@ -9,7 +9,7 @@ import {AllBooks} from '../shared';
 import {BorrowedBooks} from '../shared'
 
 import './MemberPortal.css'
-export default function MemberPortal() {
+export default function MemberPortal({userId}: {userId: number}) {
 
     const [borrows, setBorrows] = useState<IUserBorrow[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +27,8 @@ export default function MemberPortal() {
 
     console.log(isLoading, error)
     useEffect(() => {
-        Api.getBorrows()
+        if(userId) {
+            Api.getBorrows(userId)
             .then(({data}) => {
                 setBorrows(data.borrows)
                 setIsLoading(false)
@@ -36,8 +37,8 @@ export default function MemberPortal() {
                 setError(error.message);
                 setIsLoading(false);
             })
-
-    }, [])
+        }
+    }, [userId])
     return (
         <Row className="ml-0 mr-0 border MemberPortal">
             <BorrowedBooks

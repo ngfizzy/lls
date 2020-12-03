@@ -7,7 +7,7 @@ import { Section } from '../shared/Section/Section';
 import BookForm from './components/BookForm/BookForm';
 
 
- const AdminPortal: FC<{isAdmin: boolean}> = ({isAdmin}) => {
+ const AdminPortal: FC<{isAdmin: boolean, userId: number}> = ({isAdmin, userId}) => {
     const [borrows, setBorrows] = useState<IUserBorrow[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -43,18 +43,20 @@ import BookForm from './components/BookForm/BookForm';
     }
     
     useEffect(() => {
-        Api.getBorrows()
-        .then(({data}) => {
-            setBorrows(data.borrows)
-            setIsLoading(false)
-            setAddBookState('submitted')
-        })
-        .catch(error => {
-            setError(error.message);
-            setIsLoading(false);
-            setAddBookState('error')
-        });
-    }, []);
+        if(userId) {
+            Api.getBorrows(userId)
+            .then(({data}) => {
+                setBorrows(data.borrows)
+                setIsLoading(false)
+                setAddBookState('submitted')
+            })
+            .catch(error => {
+                setError(error.message);
+                setIsLoading(false);
+                setAddBookState('error')
+            });
+        }
+    }, [userId]);
     
     
     return ( 

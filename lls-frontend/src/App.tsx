@@ -17,7 +17,7 @@ function App() {
           <Container className="App">
               <GeneralNavbar />
                 <Switch>
-                  <Route path="/" exact> <Redirect to="member" /> </Route>
+                  <Route path="/" exact><Redirect to="member" /></Route>
                   <MemberRoute path="/member" component={MemberPortal} />
                   <AdminRoute path="/admin" component={AdminPortal} />
                   <Route path="/login" component={Login}/>

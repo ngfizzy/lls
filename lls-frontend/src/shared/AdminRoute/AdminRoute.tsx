@@ -5,17 +5,19 @@ import { Route, Redirect } from 'react-router-dom';
 const AdminRoute:FC<any> = ({  component: Component, ...rest }) => {
     const [token, setToken] = useState('');
     const [isAdmin, setIsAdmin] = useState(true);
+    const [userId, setUserId] =  useState<number>();
     const [isUnauthorized, setIsUnauthorized] = useState(true);
 
     useEffect(() => {
         const tkn = localStorage.getItem('token') || '';
         const strAdmin = localStorage.getItem('isAdmin') || ''
         const adm = !!JSON.parse(strAdmin)
+        const uid = parseInt(localStorage.getItem('userId') || '0')
 
         setToken(tkn);
         setIsAdmin(adm);
-
-        setIsUnauthorized( !tkn || !tkn.split('Bearer ')[1])
+        setUserId(uid)
+        setIsUnauthorized( !tkn || !tkn.split('Bearer ')[1]);
     }, [token])
 
 
@@ -24,6 +26,7 @@ const AdminRoute:FC<any> = ({  component: Component, ...rest }) => {
             {...rest}
             isAdmin={isAdmin}
             token={token}
+            userId={userId}
 
             render={props => {
                 if (isUnauthorized && !isAdmin) {
@@ -34,7 +37,7 @@ const AdminRoute:FC<any> = ({  component: Component, ...rest }) => {
                     return <Redirect to="/member" />
                 }
 
-                return <Component {...props} isAdmin={isAdmin}/>;
+                return <Component {...props} isAdmin={isAdmin} userId={userId}/>;
             }}
         />
     );

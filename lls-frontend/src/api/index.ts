@@ -13,9 +13,9 @@ class ApiFacade {
         });
     }
 
-    getBorrows() {
+    getBorrows(userId: number) {
         return axios({
-            url:  `${this.apiBaseUrl}/users/1/borrows`,
+            url:  `${this.apiBaseUrl}/users/${userId}/loan`,
             method: 'get'
         })
     }

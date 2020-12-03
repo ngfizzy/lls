@@ -24,8 +24,8 @@ export const Signup:FC<Props> = ({history}) => {
             localStorage.setItem('token', `Bearer ${token}`);
 
 
-                localStorage.setItem('isAdmin', `${user.roles === 'admin'}`);
-                localStorage.setItem('userId', `${user.id}`);
+            localStorage.setItem('isAdmin', `${user.roles === 'admin'}`);
+            localStorage.setItem('userId', `${user.id}`);
     },[token, user])
 
 
