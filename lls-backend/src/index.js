@@ -3,6 +3,7 @@ const  cors = require('cors');
 
 const { Books }  = require('./data/Books');
 const { UserBorrows } = require('./data/UserBorrows');
+const userRoutes = require('./routes/users');
 
 require('dotenv').config();
 
@@ -14,9 +15,9 @@ const sequelize = new Sequelize(process.env.DB_URL);
 (async () => {
     try {
         await sequelize.authenticate();
-        console.log('DATABASE AUTHENTICATED SUCCESSFULLY 🚀')
+        console.log('DATABASE AUTHENTICATED SUCCESSFULLY 🚀');
     } catch(e) {
-        console.error('UNABLE TO CONNECT TO THE DATABASE 😥', e)
+        console.error('UNABLE TO CONNECT TO THE DATABASE 😥', e);
     }
 })()
 
@@ -25,7 +26,9 @@ const PORT = process.env.PORT || 8080;
 const PRIVATE_IP = process.env.PRIVATE_IP;
 
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
+
+app.use('/auth', userRoutes);
 
 app.get('/api/books', (_, res) => {
     res.json({
