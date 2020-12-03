@@ -9,23 +9,45 @@ import withEllipsis from '../HOCs/withElipsis';
 interface Props {
     book: IBook;
     showBook: (arg: { book: IBook}) => any;
-    deleteBook?: (arg: IBook) => any;
+    deleteBook?: (arg: IBook)=> any;
     editBook?: (arg: IBook) => any;
     isAdmin?: boolean;
+    borrow: (arg: IBook) => any;
 }
 
-export const Book: FC<Props> = ({book, showBook, deleteBook, isAdmin})  =>{
+
+export const Book: FC<Props> = ({
+    book,
+    borrow,
+    showBook,
+    deleteBook,
+    editBook, 
+    isAdmin
+})  =>{
     return (
         <Card 
             style={{ height: '30rem', overflow: 'hidden'}}
             onClick={() => showBook({book})}
         >
-          { isAdmin? <div className="position-absolute p-1 AdminControls">
-                <FontAwesomeIcon icon={faTrash} className="mr-1 text-danger Pointer"/>
-                <FontAwesomeIcon icon={faEdit} className="Pointer" />
+          {isAdmin? <div className="position-absolute p-1 AdminControls">
+                <FontAwesomeIcon
+                    icon={faTrash}
+                    className="mr-1 text-danger Pointer"
+                    onClick={e =>{
+                        e.stopPropagation()
+                        deleteBook && deleteBook(book)
+                    }}
+                />
+                <FontAwesomeIcon
+                    icon={faEdit} 
+                    className="Pointer"
+                    onClick={e =>{
+                        e.stopPropagation();
+                        editBook && editBook(book);
+                    }}
+                />
             </div>: null}
-                        
-
+    
             <Card.Img variant="top" src={book.cover ||  bookDefaultImage} height="300"/>
             <Card.Body>
 
@@ -38,8 +60,14 @@ export const Book: FC<Props> = ({book, showBook, deleteBook, isAdmin})  =>{
                         {(book.summary || '').substr(0,79) + '...'}
                     </Card.Text>
                 </div>
-                <Button className="mr-1" variant="secondary" onClick={() => showBook({book})}>View Full</Button>
-                <Button variant="primary">Borrow</Button>
+                <Button 
+                    className="mr-1" variant="secondary" 
+                    onClick={e => {e.stopPropagation(); 
+                    showBook({book})}}>View Full</Button>
+                <Button variant="primary" onClick={e =>{
+                    e.stopPropagation();
+                    borrow(book);
+                }}>Borrow</Button>
             </Card.Body>
         </Card>
     )

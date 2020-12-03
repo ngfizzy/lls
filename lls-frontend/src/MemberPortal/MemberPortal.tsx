@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { Row } from 'react-bootstrap'
-import { IUserBorrow } from '../../../models'
+import { IBook, IUserBorrow } from '../../../models'
 import { GeneralModal } from '../shared'
 import Api from '../api'
 
@@ -27,26 +27,33 @@ export default function MemberPortal({userId}: {userId: number}) {
 
     console.log(isLoading, error)
     useEffect(() => {
-        if(userId) {
-            Api.getBorrows(userId)
+            Api.getBorrows()
             .then(({data}) => {
-                setBorrows(data.borrows)
+                setBorrows(data.loans)
                 setIsLoading(false)
             })
             .catch(error => {
                 setError(error.message);
                 setIsLoading(false);
             })
-        }
-    }, [userId])
+    }, []);
+
+    const borrowBook = (book: IBook) => {
+        Api.createLoan({
+            userId,
+            bookId: book.id,
+            days: 7,
+        });
+    }
     return (
         <Row className="ml-0 mr-0 border MemberPortal">
             <BorrowedBooks
                 borrows={borrows}
-                showBookDetails={handleShowModal}
+                showLoan={handleShowModal}
             />
             <AllBooks
                 showBookDetails={handleShowModal}
+                borrow={borrowBook}
             />
 
             <GeneralModal 

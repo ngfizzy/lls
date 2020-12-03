@@ -11,8 +11,8 @@ const AdminRoute:FC<any> = ({  component: Component, ...rest }) => {
     useEffect(() => {
         const tkn = localStorage.getItem('token') || '';
         const strAdmin = localStorage.getItem('isAdmin') || ''
-        const adm = !!JSON.parse(strAdmin)
-        const uid = parseInt(localStorage.getItem('userId') || '0')
+        const adm = !strAdmin? false : !!JSON.parse(strAdmin)
+        const uid = JSON.parse(localStorage.getItem('userId') || '0')
 
         setToken(tkn);
         setIsAdmin(adm);

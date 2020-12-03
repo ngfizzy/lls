@@ -2,7 +2,6 @@ import axios from 'axios';
 import { IBook, IUser } from '../../../models';
 
 class ApiFacade {
-
     private apiBaseUrl = 'http://localhost:8080/api'
 
     getAllBooks() {
@@ -13,10 +12,20 @@ class ApiFacade {
         });
     }
 
-    getBorrows(userId: number) {
+    getBorrows() {
         return axios({
-            url:  `${this.apiBaseUrl}/users/${userId}/loan`,
-            method: 'get'
+            url:  `${this.apiBaseUrl}/loans`,
+            method: 'get',
+            headers: { authorization: localStorage.getItem('token')}
+        })
+    }
+
+    createLoan(loan: { userId: number; bookId: number; days: number; }) {
+        return axios({
+            url: `${this.apiBaseUrl}/loans`,
+            method: 'post',
+            data: loan,
+            headers: { authorization: localStorage.getItem('token')},
         })
     }
 

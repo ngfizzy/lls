@@ -8,10 +8,10 @@ import './BorrowedBooks.css';
 
 interface Props {
   borrows: IUserBorrow[];
-  showBookDetails: (arg: Partial<IUserBorrow>) => any;
+  showLoan: (arg: Partial<IUserBorrow>) => any;
 }
 
-export const BorrowedBooks: FC<Props> = ({ borrows, showBookDetails }) => {
+export const BorrowedBooks: FC<Props> = ({ borrows, showLoan }) => {
     return (
     <Col
       as={'aside'}
@@ -26,7 +26,9 @@ export const BorrowedBooks: FC<Props> = ({ borrows, showBookDetails }) => {
           borrows.map((borrow, i) => (<ListGroup.Item
               style={{cursor: 'pointer'}}
               key={i}
-              onClick={() =>  showBookDetails(borrows[i])}
+              onClick={(e) =>{
+                showLoan(borrows[i]);
+              }}
               >{
               withEllipsis(
                 <span>{borrow.book.title}</span>

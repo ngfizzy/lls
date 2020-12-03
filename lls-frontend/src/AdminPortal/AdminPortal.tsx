@@ -43,10 +43,10 @@ import BookForm from './components/BookForm/BookForm';
     }
     
     useEffect(() => {
-        if(userId) {
-            Api.getBorrows(userId)
+            Api.getBorrows()
             .then(({data}) => {
-                setBorrows(data.borrows)
+                console.log('>>>>>>>>>>>>>>>>>>>.',data.loans)
+                setBorrows(data.loans)
                 setIsLoading(false)
                 setAddBookState('submitted')
             })
@@ -55,27 +55,29 @@ import BookForm from './components/BookForm/BookForm';
                 setIsLoading(false);
                 setAddBookState('error')
             });
-        }
     }, [userId]);
     
+    const borrowBook = (book: IBook) => {
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>', book);
+    }
     
     return ( 
-        <>
+    <>
         <Row>
             <Section title="Add Book" dimensions={{xs: 12, sm: 2}}>
             <Button size="lg" variant="primary" onClick={e => setIsBookFormOpen(true)}> Add New Book</Button>
             </Section>
         </Row>
         <Row className="ml-0 mr-0 border">
-       
             <BorrowedBooks
                 borrows={borrows}
-                showBookDetails={handleShowModal}
+                showLoan={handleShowModal}
             />
             <AllBooks
                 adminView={isAdmin}
                 showBookDetails={handleShowModal}
                 refetch={refetchBooks}
+                borrow={borrowBook}
             />
 
             <GeneralModal 

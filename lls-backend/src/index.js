@@ -31,12 +31,7 @@ app.use(express.json());
 app.use('/api/auth', routes.userRoutes);
 app.use('/api/books', useAuth, routes.bookRoutes);
 
-app.get('/api/users/:id/loan', (_, res) => {
-    return res.json({
-        message: 'User\'s Borrowed Books Fetched Successfully',
-        borrows: UserBorrows
-    });
-});
+app.use('/api/loans',  useAuth, routes.loans);
 
 
 app.get('*', (_, res) => {

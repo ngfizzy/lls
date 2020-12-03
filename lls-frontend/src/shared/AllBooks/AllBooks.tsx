@@ -10,10 +10,11 @@ interface Props {
     showBookDetails: (arg: {book: IBook}) => any;
     refetch?: boolean;
     adminView?: boolean;
+    borrow: (arg: IBook) => any;
 }
 
 
-export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView })  => {
+export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView, borrow })  => {
     const [books, setBooks] = useState<IBook[]>([])
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -29,6 +30,7 @@ export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView })  =
         }
     }, [refetch, books]);
 
+
     return (
         <Section
             dimensions={{
@@ -41,6 +43,7 @@ export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView })  =
             {books.map((book, i) => (
                 <Col xs={12} sm={6} lg={4} className="mb-3" key={i}>
                     <Book
+                        borrow={borrow}
                         isAdmin={adminView}
                         book={book}
                         showBook={showBookDetails}

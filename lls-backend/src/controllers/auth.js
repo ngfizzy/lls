@@ -55,7 +55,7 @@ module.exports = {
                     user,
                     message: 'Login Successfully',
                     error: false
-                }
+                };
             }
 
             return errorRes;
