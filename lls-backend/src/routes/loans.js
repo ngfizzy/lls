@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
 
     const date = new Date().addDays(days);
 
-    loan.expiresOn = date;
+    loan.expiredOn = date;
 
     try {
         const result = await loanController.createLoan(loan);
@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
             return res.json(result)
         }
 
-       return res.status(404).json(result)
+       return res.status(400).json(result)
 
     } catch(e) {
         console.error('error occurred', error)
@@ -58,6 +58,24 @@ router.post('/', async (req, res) => {
         });;
     }
 });
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const result = await loanController.completeLoan(req.params.id);
+        
+        if(!result.error) {
+            return res.json(result)
+        }
+
+       return res.status(400).json(result)
+
+    } catch(e) {
+        console.error('error occurred', error)
+        return res.status(500).json({
+            error: true,
+            message: e.message,
+        });
+    }})
 
 
 module.exports = router;

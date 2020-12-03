@@ -28,8 +28,11 @@ export interface IUser {
     roles: 'admin' | 'member' | null;
 }
 
-export interface IUserBorrow  {
+export interface ILoan  {
+    id?: number;
     book: IBook;
+    bookId: number;
+    userId: number;
     requestedOn: Date;
     rejectedOn?: Date
     approvedOn?: Date;

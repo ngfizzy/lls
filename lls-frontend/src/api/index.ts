@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IBook, IUser } from '../../../models';
+import { IBook, ILoan, IUser } from '../../../models';
 
 class ApiFacade {
     private apiBaseUrl = 'http://localhost:8080/api'
@@ -34,6 +34,14 @@ class ApiFacade {
             url: `${this.apiBaseUrl}/books`,
             method: 'POST',
             data: book,
+            headers: { authorization: localStorage.getItem('token')}
+        });
+    }
+
+    completeLoan(loan: ILoan) {
+        return axios({
+            url: `${this.apiBaseUrl}/loans/${loan.id}`,
+            method: 'DELETE',
             headers: { authorization: localStorage.getItem('token')}
         });
     }

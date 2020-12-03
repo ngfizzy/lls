@@ -1,24 +1,29 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Button, Row } from 'react-bootstrap'
-import {FormState, IBook, IUserBorrow } from '../../../models';
+import {FormState, IBook, ILoan } from '../../../models';
 import Api from '../api';
 import { AllBooks, BorrowedBooks, GeneralModal } from '../shared';
+import LoanDetails from '../shared/LoanTable/LoanDetails';
 import { Section } from '../shared/Section/Section';
 import BookForm from './components/BookForm/BookForm';
 
 
  const AdminPortal: FC<{isAdmin: boolean, userId: number}> = ({isAdmin, userId}) => {
-    const [borrows, setBorrows] = useState<IUserBorrow[]>([]);
+    const [borrows, setBorrows] = useState<Partial<ILoan>[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const [selectedBook, setSelectedBook] = useState<Partial<IUserBorrow>>();
+    const [selectedBook, setSelectedBook] = useState<Partial<Partial<ILoan>>>();
     const [isBookFormOpen, setIsBookFormOpen] = useState(false)
     const [refetchBooks, setRefetchBooks] = useState(false)
     const [addBookState, setAddBookState]  = useState<FormState>('pristine')
+    const [shouldFetchLoans, setShouldFetchLoans] = useState(true);
+    const  [shouldShowLoan, setShouldShowLoan]  = useState(false);
+    const [loan, setLoan] = useState<Partial<ILoan>>();
+
 
     const handleCloseModal = () => setShowModal(false);
-    const handleShowModal = (fullBook: Partial<IUserBorrow>) => {
+    const handleShowModal = (fullBook: Partial<Partial<ILoan>>) => {
         setShowModal(true);
         setSelectedBook(fullBook);
     }
@@ -43,9 +48,9 @@ import BookForm from './components/BookForm/BookForm';
     }
     
     useEffect(() => {
+        if(shouldFetchLoans) {
             Api.getBorrows()
             .then(({data}) => {
-                console.log('>>>>>>>>>>>>>>>>>>>.',data.loans)
                 setBorrows(data.loans)
                 setIsLoading(false)
                 setAddBookState('submitted')
@@ -54,13 +59,47 @@ import BookForm from './components/BookForm/BookForm';
                 setError(error.message);
                 setIsLoading(false);
                 setAddBookState('error')
-            });
-    }, [userId]);
+            }).finally(() => setShouldFetchLoans(false));
+        }
+          
+    }, [shouldFetchLoans]);
     
     const borrowBook = (book: IBook) => {
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>', book);
+        Api.createLoan({
+            userId,
+            bookId: book.id,
+            days: 7,
+        }).then(({data}) => {
+            setShouldFetchLoans(!data.error);
+            if(data.error) {
+                setError(data.message)
+            }
+        })
+        .catch(error => {
+            setError(error.message)
+        } );
     }
-    
+
+
+    const showLoan = (loanToShow: Partial<ILoan>) => {
+        setShouldShowLoan(true);
+        setLoan(loanToShow)
+    }
+
+    const completeLoan = (loan: ILoan) => {
+        Api.completeLoan(loan)
+            .then(({data}) => {
+
+                setShouldFetchLoans(!data.error);
+                if(data.error) {
+                    setError(data.message)
+                }
+            })
+            .catch((error: { message: React.SetStateAction<string>; }) => {
+                setError(error.message)
+            })
+    }
+
     return ( 
     <>
         <Row>
@@ -70,8 +109,9 @@ import BookForm from './components/BookForm/BookForm';
         </Row>
         <Row className="ml-0 mr-0 border">
             <BorrowedBooks
-                borrows={borrows}
-                showLoan={handleShowModal}
+                isAdmin={isAdmin}
+                borrows={borrows as ILoan[]}
+                showLoan={showLoan}
             />
             <AllBooks
                 adminView={isAdmin}
@@ -79,6 +119,21 @@ import BookForm from './components/BookForm/BookForm';
                 refetch={refetchBooks}
                 borrow={borrowBook}
             />
+
+
+            <GeneralModal 
+                handleClose={() => setShouldShowLoan(false)}
+                title={loan?.book?.title!}
+                show={shouldShowLoan}
+                size="lg"
+                controls="closeOnly"
+            >
+                <LoanDetails 
+                    loan={loan as ILoan}
+                    isAdmin={isAdmin}
+                    completeLoan={completeLoan}
+                />
+            </GeneralModal>
 
             <GeneralModal 
                 handleClose={handleCloseModal} 

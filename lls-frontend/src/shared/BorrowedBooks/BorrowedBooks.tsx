@@ -1,17 +1,18 @@
 import React, { FC } from 'react'
 import { Col, ListGroup } from 'react-bootstrap'
-import { IUserBorrow } from '../../../../models';
+import { ILoan } from '../../../../models';
 import withEllipsis from '../HOCs/withElipsis';
 import {SectionTitle} from '..';
 import './BorrowedBooks.css';
 
 
 interface Props {
-  borrows: IUserBorrow[];
-  showLoan: (arg: Partial<IUserBorrow>) => any;
+  borrows: ILoan[];
+  showLoan: (arg: Partial<ILoan>) => any;
+  isAdmin?: boolean;
 }
 
-export const BorrowedBooks: FC<Props> = ({ borrows, showLoan }) => {
+export const BorrowedBooks: FC<Props> = ({ borrows, showLoan, isAdmin }) => {
     return (
     <Col
       as={'aside'}
@@ -19,7 +20,7 @@ export const BorrowedBooks: FC<Props> = ({ borrows, showLoan }) => {
       sm={12}
       md={3}
     >
-      <SectionTitle title={"Borrowed Books"} />
+      <SectionTitle title={isAdmin? 'All Book Loans' : 'My Book Loans'} />
 
       <ListGroup>
         {

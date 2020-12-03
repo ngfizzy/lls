@@ -8,14 +8,15 @@ interface Props {
     error: string;
 }
 const BookForm: FC<Props> = ({ handleSubmit, formState, error }) => {
-    const initialBook = {};
+    const initialBook = {
+        copies: 1
+    };
 
     const [book, setBook] = useState<Partial<IBook>>(initialBook);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>  {
         const value = e.target.value;
         const key = e.target.id;
-
         setBook(prevBook => {
             return {
                 ...prevBook,
@@ -25,10 +26,11 @@ const BookForm: FC<Props> = ({ handleSubmit, formState, error }) => {
     }
 
     const handleCheck = (e: React.FormEvent<HTMLInputElement>) => {
+    
         setBook(prevBook => {
             return {
                 ...prevBook,
-                ebook: JSON.parse((e.target as HTMLInputElement).value),
+                ebook: (e.target as HTMLInputElement).checked,
             }
         });
     }
@@ -69,17 +71,15 @@ const BookForm: FC<Props> = ({ handleSubmit, formState, error }) => {
                     value={book.summary || ''} as="textarea" type="text" placeholder="Book Summary" />
             </Form.Group>
 
-            <Form.Group controlId="author">
+            <Form.Group controlId="copies">
                 <Form.Label>Copies</Form.Label>
                 <Form.Control
                     onChange={e => handleOnChange(e)}
-                    value={book.copies || 1} type="number" placeholder="Number of Copies" />
+                    value={book.copies} type="number" placeholder="Number of Copies" />
             </Form.Group>
 
             <Form.Group controlId="ebook">
-                <Form.Group controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" value={`${book.ebook}`} checked={!!book.ebook} label="Ebook" onChange={e => handleCheck(e)} />
-            </Form.Group>
+                <Form.Check type="checkbox"  checked={!!book.ebook} label="Ebook" onChange={e => handleCheck(e)} />
             </Form.Group>
             <Button className="p-inline-block w-100" variant="primary" type="submit">
                 Add
