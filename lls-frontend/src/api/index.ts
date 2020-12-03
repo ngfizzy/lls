@@ -8,8 +8,9 @@ class ApiFacade {
     getAllBooks() {
         return axios({
             url: `${this.apiBaseUrl}/books`,
-            method: 'get'
-            });
+            method: 'get',
+            headers: { authorization: localStorage.getItem('token')}
+        });
     }
 
     getBorrows() {

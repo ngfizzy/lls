@@ -4,6 +4,7 @@ const  cors = require('cors');
 const { Books }  = require('./data/Books');
 const { UserBorrows } = require('./data/UserBorrows');
 const routes = require('./routes/');
+const useAuth = require('./custom-middleware/auth-middleware')
 
 require('dotenv').config();
 
@@ -28,7 +29,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', routes.userRoutes);
-app.use('/api/books', routes.bookRoutes);
+app.use('/api/books', useAuth, routes.bookRoutes);
 
 app.get('/api/users/:id/borrows', (_, res) => {
     return res.json({

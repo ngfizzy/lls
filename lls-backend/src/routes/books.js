@@ -25,6 +25,7 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async(_, res) => {
+    console.log(">>>>>>>>>Header>>>>>>>>>>>>>>>>>>>>", _.header.user)
 
     try {
         const result = await bookController.getAllBooks();
