@@ -24,6 +24,28 @@ router.post('/', adminMiddleWare, async (req, res) => {
     }
 });
 
+router.delete('/:id', adminMiddleWare, async(req, res) => {
+    const bookId = req.params.id;
+    
+
+    try {
+        const result = await bookController.deleteBook(bookId);
+ 
+        if(!result.error) {
+            return res.status(201).json(result)
+        }
+ 
+        return res.status(400).json(result)
+ 
+     } catch(e) {
+         console.log('eeeeè, ', e)
+         return res.status(500).json({
+             error: true,
+             message: e.message,
+         });;
+     }
+});
+
 router.get('/', async(_, res) => {
     try {
         const result = await bookController.getAllBooks();

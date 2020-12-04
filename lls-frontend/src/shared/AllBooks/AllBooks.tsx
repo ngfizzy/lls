@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { IBook } from '../../../../models';
+import Api from '../../api';
 
 import {Book} from '..';
 import { Section } from '../Section/Section';
@@ -31,6 +32,13 @@ export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView, borr
     }, [refetch, books]);
 
 
+    const deleteMe = async (book: IBook) => {
+        Api.deleteBook(book.id)
+            .then(()=> {
+                setBooks(prevBooks=> prevBooks.filter(nextBook => book.id !== nextBook.id ))
+            });
+    }
+
     return (
         <Section
             dimensions={{
@@ -47,7 +55,7 @@ export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView, borr
                         isAdmin={adminView}
                         book={book}
                         showBook={showBookDetails}
-                        deleteBook={() => {}}
+                        deleteBook={() => deleteMe(book)}
                     />
                 </Col>
             ))}

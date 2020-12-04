@@ -61,6 +61,14 @@ class ApiFacade {
             data:  user,
         })
     }
+
+    deleteBook(bookId: number) {
+        return axios({
+            url: `${this.apiBaseUrl}/books/${bookId}`,
+            method: 'DELETE',
+            headers: { authorization: localStorage.getItem('token')}
+        })
+    }
 }
 
 export default new ApiFacade();
