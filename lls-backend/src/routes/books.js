@@ -24,6 +24,26 @@ router.post('/', adminMiddleWare, async (req, res) => {
     }
 });
 
+router.put('/', adminMiddleWare, async (req, res) => {
+    const { body } = req;
+
+    try {
+       const result = await bookController.editBook(body);
+
+       if(!result.error) {
+           return res.status(200).json(result)
+       }
+
+       return res.status(400).json(result)
+
+    } catch(e) {
+        return res.status(500).json({
+            error: true,
+            message: e.message,
+        });;
+    }  
+});
+
 router.delete('/:id', adminMiddleWare, async(req, res) => {
     const bookId = req.params.id;
     
@@ -38,13 +58,14 @@ router.delete('/:id', adminMiddleWare, async(req, res) => {
         return res.status(400).json(result)
  
      } catch(e) {
-         console.log('eeeeè, ', e)
          return res.status(500).json({
              error: true,
              message: e.message,
          });;
      }
 });
+
+
 
 router.get('/', async(_, res) => {
     try {

@@ -57,5 +57,24 @@ module.exports =  {
                   error: true,
               };
           }
+    },
+    async editBook(book) {
+        const {id: bookId, ...rest } = book;
+        try {
+            const existingBook = await Book.findOne({ where: { id: bookId}})
+
+            existingBook.set(rest);
+            const transaction = await existingBook.save()
+            return {
+            book: transaction,
+            message: 'Book deleted successfully',
+            error: false,
+            };
+         } catch(error) {
+             return {
+                 message: error.message,
+                 error: true,
+             };
+         }
     }
 }
