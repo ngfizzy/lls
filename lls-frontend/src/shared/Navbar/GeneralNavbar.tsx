@@ -39,7 +39,14 @@ export function GeneralNavbar() {
 
            </Row>
           </Form>
-            <Button className="col-sm-12 col-md-3" variant="secondary">Logout</Button>
+            <Button
+              className="col-sm-12 col-md-3" 
+              variant="secondary"
+              onClick={() => {
+                localStorage.clear();
+                window.location.reload();
+              }}
+            >Logout</Button>
           </Row>
         </Navbar.Collapse>
       </Navbar>

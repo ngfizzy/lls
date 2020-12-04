@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Row, Col, Form, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 import { IUser } from '../../../../models';
 import api from '../../api';
 import { Section } from '../../shared/Section/Section'
@@ -93,6 +94,7 @@ export const Signup:FC<Props> = ({history}) => {
                         Sign Up
                     </Button>
                     </Form>
+                    <Link to="/login">Already Have An Account</Link>
             </Col>
         </Row>
      

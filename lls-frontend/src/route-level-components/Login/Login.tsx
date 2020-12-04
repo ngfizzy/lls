@@ -3,7 +3,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Section } from '../../shared/Section/Section';
 import { IUser } from '../../../../models';
 import Api from '../../api'
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 export default function Login() {
     const initialState:Partial<IUser> = {
@@ -14,12 +14,13 @@ export default function Login() {
     const [user, setUser] = useState(initialState);
     const [token, setToken] = useState('');
     const [submitted, setSubmitted] = useState(false)
+    const [error, setError] = useState('')
 
     useEffect(() => {   
 
-            localStorage.setItem('token', `Bearer ${token}`);
-            localStorage.setItem('isAdmin', JSON.stringify(user.roles === 'admin'));
-            localStorage.setItem('userId', `${user.id}`);
+        localStorage.setItem('token', `Bearer ${token}`);
+        localStorage.setItem('isAdmin', JSON.stringify(user.roles === 'admin'));
+        localStorage.setItem('userId', `${user.id}`);
     },[token, user])
 
     useEffect(() => {
@@ -30,7 +31,10 @@ export default function Login() {
                 
                 setUser(() => data.user);
                 setToken(() => data.token)
-            });
+            })
+            .catch(() => {
+                setError('Wrong username or password');
+            })
         }
   
     }, [submitted, user])
@@ -47,6 +51,7 @@ export default function Login() {
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         setSubmitted(false);
+        setError('');
         setUser(prevUser => {
             return {
                 ...prevUser,
@@ -80,10 +85,10 @@ export default function Login() {
                         </Form.Group>
                    
                         <Button variant="primary" type="submit" className="d-block w-100">
-                        Sign Up
+                        Login
                     </Button>
                     </Form>
-
+                    <Link to="/signup">Or Signup</Link>
                 </Col>
             </Row>
          

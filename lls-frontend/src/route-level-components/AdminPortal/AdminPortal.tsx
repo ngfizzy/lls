@@ -9,7 +9,7 @@ import BookForm from './components/BookForm/BookForm';
 
 
  const AdminPortal: FC<{isAdmin: boolean, userId: number}> = ({isAdmin, userId}) => {
-    const [borrows, setBorrows] = useState<Partial<ILoan>[]>([]);
+    const [loans, setLoans] = useState<Partial<ILoan>[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
@@ -54,7 +54,7 @@ import BookForm from './components/BookForm/BookForm';
         if(shouldFetchLoans) {
             Api.getBorrows()
             .then(({data}) => {
-                setBorrows(data.loans)
+                setLoans(data.loans)
                 setIsLoading(false)
                 setAddBookState('submitted')
             })
@@ -127,7 +127,7 @@ import BookForm from './components/BookForm/BookForm';
         <Row className="ml-0 mr-0 border">
             <BorrowedBooks
                 isAdmin={isAdmin}
-                borrows={borrows as ILoan[]}
+                borrows={loans as ILoan[]}
                 showLoan={showLoan}
             />
             <AllBooks
