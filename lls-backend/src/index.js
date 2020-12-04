@@ -1,8 +1,6 @@
 const express  = require('express');
 const  cors = require('cors');
 
-const { Books }  = require('./data/Books');
-const { UserBorrows } = require('./data/UserBorrows');
 const routes = require('./routes/');
 const useAuth = require('./custom-middleware/auth-middleware')
 

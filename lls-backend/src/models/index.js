@@ -6,4 +6,5 @@ module.exports = {
     Author: require('./author')(sequelize, DataTypes),
     Loan: require('./loan')(sequelize, DataTypes),
     Book: require('./book')(sequelize, DataTypes),
+    Notification: require('./notification')(sequelize, DataTypes)
 }

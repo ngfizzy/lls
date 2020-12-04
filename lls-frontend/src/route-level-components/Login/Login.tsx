@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { Section } from '../../shared/Section/Section';
 import { IUser } from '../../../../models';
 import Api from '../../api'
@@ -71,6 +71,7 @@ export default function Login() {
 
     return (
         <Section title="Login" dimensions={{xs: 11}}>
+            {error? <Alert variant="danger">{error}</Alert> : null}: 
             <Row>
                 <Col  xs={12} sm={12} lg={6} className="m-auto p-2 border border-grey">
                     <Form onSubmit={e => handleSubmit(e)}>
