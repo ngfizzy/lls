@@ -8,14 +8,15 @@ import { Section } from '../Section/Section';
 import { fetchAllBooks } from '../../helpers';
 
 interface Props {
-    showBookDetails: (arg: {book: IBook}) => any;
+    showBookDetails: (arg: IBook) => any;
     refetch?: boolean;
     adminView?: boolean;
     borrow: (arg: IBook) => any;
+    editBook?: (arg: IBook) => any;
 }
 
 
-export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView, borrow })  => {
+export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView, borrow, editBook })  => {
     const [books, setBooks] = useState<IBook[]>([])
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -54,8 +55,9 @@ export const AllBooks: FC<Props> =  ({ showBookDetails, refetch, adminView, borr
                         borrow={borrow}
                         isAdmin={adminView}
                         book={book}
-                        showBook={showBookDetails}
+                        showBook={() => showBookDetails(book)}
                         deleteBook={() => deleteMe(book)}
+                        editBook={() => editBook && editBook(book)}
                     />
                 </Col>
             ))}

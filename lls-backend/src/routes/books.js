@@ -44,6 +44,7 @@ router.put('/', adminMiddleWare, async (req, res) => {
     }  
 });
 
+
 router.delete('/:id', adminMiddleWare, async(req, res) => {
     const bookId = req.params.id;
     
@@ -64,7 +65,6 @@ router.delete('/:id', adminMiddleWare, async(req, res) => {
          });;
      }
 });
-
 
 
 router.get('/', async(_, res) => {

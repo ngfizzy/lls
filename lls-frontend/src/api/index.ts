@@ -38,6 +38,15 @@ class ApiFacade {
         });
     }
 
+    editBook(book: IBook) {
+        return axios({
+            url: `${this.apiBaseUrl}/books`,
+            method: 'PUT',
+            data: book,
+            headers: { authorization: localStorage.getItem('token')}
+        });
+    }
+
     completeLoan(loan: ILoan) {
         return axios({
             url: `${this.apiBaseUrl}/loans/${loan.id}`,

@@ -13,7 +13,7 @@ import BookForm from './components/BookForm/BookForm';
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const [selectedBook, setSelectedBook] = useState<Partial<Partial<ILoan>>>();
+    const [selectedBook, setSelectedBook] = useState<Partial<IBook>>();
     const [isBookFormOpen, setIsBookFormOpen] = useState(false)
     const [refetchBooks, setRefetchBooks] = useState(false)
     const [addBookState, setAddBookState]  = useState<FormState>('pristine')
@@ -21,9 +21,8 @@ import BookForm from './components/BookForm/BookForm';
     const  [shouldShowLoan, setShouldShowLoan]  = useState(false);
     const [loan, setLoan] = useState<Partial<ILoan>>();
 
-
     const handleCloseModal = () => setShowModal(false);
-    const handleShowModal = (fullBook: Partial<Partial<ILoan>>) => {
+    const handleShowModal = (fullBook: IBook) => {
         setShowModal(true);
         setSelectedBook(fullBook);
     }
@@ -33,21 +32,25 @@ import BookForm from './components/BookForm/BookForm';
         e.preventDefault();
         
         try {
-            await Api.addBook(book as IBook)
-            .then(_ => {
-                setAddBookState('submitted');
-                setIsBookFormOpen(false);
-                setRefetchBooks(() => true);
-                setRefetchBooks(() => false)
-            })
+            if(book.id) {
+                await Api.editBook(book as IBook);
+            } else {
+                await Api.addBook(book as IBook);
+            }
+
+            setAddBookState('submitted');
+            setIsBookFormOpen(false);
+            setRefetchBooks(() => true);
+            setRefetchBooks(() => false)
         } catch(e) {
             setError(e.message);
             setAddBookState('error');
             setRefetchBooks(() => false);
         } 
     }
-    
+
     useEffect(() => {
+
         if(shouldFetchLoans) {
             Api.getBorrows()
             .then(({data}) => {
@@ -61,9 +64,8 @@ import BookForm from './components/BookForm/BookForm';
                 setAddBookState('error')
             }).finally(() => setShouldFetchLoans(false));
         }
-          
     }, [shouldFetchLoans]);
-    
+
     const borrowBook = (book: IBook) => {
         Api.createLoan({
             userId,
@@ -100,11 +102,21 @@ import BookForm from './components/BookForm/BookForm';
             })
     }
 
+    const editBook = (book: IBook) => {
+        setSelectedBook(book);
+        setIsBookFormOpen(true);
+    }
+
     return ( 
     <>
         <Row>
             <Section title="Add Book" dimensions={{xs: 12, sm: 2}}>
-            <Button size="lg" variant="primary" onClick={e => setIsBookFormOpen(true)}> Add New Book</Button>
+                <Button
+                    size="lg"
+                    variant="primary" 
+                    onClick={e => setIsBookFormOpen(true)}>
+                        Add New Book
+                </Button>
             </Section>
         </Row>
         <Row className="ml-0 mr-0 border">
@@ -116,6 +128,7 @@ import BookForm from './components/BookForm/BookForm';
             <AllBooks
                 adminView={isAdmin}
                 showBookDetails={handleShowModal}
+                editBook={editBook}
                 refetch={refetchBooks}
                 borrow={borrowBook}
             />
@@ -137,7 +150,7 @@ import BookForm from './components/BookForm/BookForm';
 
             <GeneralModal 
                 handleClose={handleCloseModal} 
-                title={selectedBook?.book?.title!}
+                title={selectedBook?.title!}
                 show={showModal}
                 size="lg"
             >
@@ -145,7 +158,10 @@ import BookForm from './components/BookForm/BookForm';
             </GeneralModal>
 
             <GeneralModal
-                handleClose={() => setIsBookFormOpen(false)} 
+                handleClose={() => {
+                    setIsBookFormOpen(false); 
+                    setSelectedBook({});
+                } }
                 title="Add New Book"
                 show={isBookFormOpen}
                 controls="closeOnly"
@@ -153,6 +169,7 @@ import BookForm from './components/BookForm/BookForm';
             >
                 <BookForm 
                     formState={addBookState}
+                    selectedBook={selectedBook as IBook}
                     error={error}
                     handleSubmit={(e, book) => handleBookAddition(e, book)}
                 />

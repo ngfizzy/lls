@@ -32,7 +32,7 @@ export const BorrowedBooks: FC<Props> = ({ borrows, showLoan, isAdmin }) => {
               }}
               >{
               withEllipsis(
-                <span>{borrow.book.title}</span>
+                <span>{borrow.book?.title}</span>
               )
             }</ListGroup.Item>))
         }

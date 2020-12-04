@@ -6,10 +6,12 @@ interface Props {
     handleSubmit: (e: React.SyntheticEvent, arg: Partial<IBook>) => any;
     formState: FormState;
     error: string;
+    selectedBook?: IBook;
 }
-const BookForm: FC<Props> = ({ handleSubmit, formState, error }) => {
+const BookForm: FC<Props> = ({ handleSubmit, formState, error, selectedBook }) => {
     const initialBook = {
-        copies: 1
+        copies: 1,
+        ...(selectedBook || {})
     };
 
     const [book, setBook] = useState<Partial<IBook>>(initialBook);
