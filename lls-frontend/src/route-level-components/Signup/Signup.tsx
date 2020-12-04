@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Row, Col, Form, Button } from 'react-bootstrap'
-import { IUser } from '../../../models';
-import api from '../api';
-import { Section } from '../shared/Section/Section'
+import { IUser } from '../../../../models';
+import api from '../../api';
+import { Section } from '../../shared/Section/Section'
 
 
 interface Props {

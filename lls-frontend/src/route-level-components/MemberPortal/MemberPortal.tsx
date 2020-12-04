@@ -1,14 +1,15 @@
 
 import React, { useEffect, useState } from 'react'
 import { Row } from 'react-bootstrap'
-import { IBook, ILoan } from '../../../models'
-import { GeneralModal } from '../shared'
-import Api from '../api'
+import { IBook, ILoan } from '../../../../models'
+import { GeneralModal } from '../../shared'
+import Api from '../../api'
 
-import {AllBooks} from '../shared';
-import {BorrowedBooks} from '../shared'
+import {AllBooks} from '../../shared';
+import {BorrowedBooks} from '../../shared'
 
 import './MemberPortal.css'
+import LoanDetails from '../../shared/LoanTable/LoanDetails'
 export default function MemberPortal({userId}: {userId: number}) {
 
     const [borrows, setBorrows] = useState<ILoan[]>([]);
@@ -68,7 +69,7 @@ export default function MemberPortal({userId}: {userId: number}) {
                 show={showModal}
                 size="lg"
             >
-                <div>{JSON.stringify(selectedBook)}</div>
+                <LoanDetails hideControls={true} loan={{book: selectedBook} as ILoan} />
             </GeneralModal>
         </Row>
     )

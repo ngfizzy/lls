@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Button, Row } from 'react-bootstrap'
-import {FormState, IBook, ILoan } from '../../../models';
-import Api from '../api';
-import { AllBooks, BorrowedBooks, GeneralModal } from '../shared';
-import LoanDetails from '../shared/LoanTable/LoanDetails';
-import { Section } from '../shared/Section/Section';
+import { Alert, Button, Row } from 'react-bootstrap'
+import {FormState, IBook, ILoan } from '../../../../models';
+import Api from '../../api';
+import { AllBooks, BorrowedBooks, GeneralModal } from '../../shared';
+import LoanDetails from '../../shared/LoanTable/LoanDetails';
+import { Section } from '../../shared/Section/Section';
 import BookForm from './components/BookForm/BookForm';
 
 
@@ -110,13 +110,18 @@ import BookForm from './components/BookForm/BookForm';
     return ( 
     <>
         <Row>
-            <Section title="Add Book" dimensions={{xs: 12, sm: 2}}>
+            <Section title="" dimensions={{xs: 12, sm: 3}}>
                 <Button
                     size="lg"
                     variant="primary" 
                     onClick={e => setIsBookFormOpen(true)}>
                         Add New Book
                 </Button>
+            </Section>
+            <Section title="Books And Loans Managed Here" dimensions={{xs: 12, sm: 8}}>
+
+                {error? <Alert variant="warning">{error}</Alert>: null}
+                {isLoading? <Alert variant="info">Loading....</Alert>: null}
             </Section>
         </Row>
         <Row className="ml-0 mr-0 border">
@@ -153,8 +158,9 @@ import BookForm from './components/BookForm/BookForm';
                 title={selectedBook?.title!}
                 show={showModal}
                 size="lg"
+                controls="closeOnly"
             >
-                <div>{JSON.stringify(selectedBook)}</div>
+                <LoanDetails hideControls={true} loan={{book: selectedBook } as ILoan}/>
             </GeneralModal>
 
             <GeneralModal

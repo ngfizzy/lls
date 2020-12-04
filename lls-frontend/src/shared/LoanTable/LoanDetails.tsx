@@ -10,13 +10,15 @@ interface Props {
     notifyToReturn?: (loan: ILoan) =>  any;
     completeLoan?: (loan: ILoan) => any;
     isAdmin?: boolean;
+    hideControls?: boolean;
 }
 
 const LoanDetails:FC<Props> = ({
     loan,
     notifyToReturn,
     completeLoan,
-    isAdmin
+    isAdmin,
+    hideControls
 }) => {
     
     const renderLoanData = (loanData: any) => {
@@ -56,7 +58,7 @@ const LoanDetails:FC<Props> = ({
             
         </tbody>
         <tfoot>
-            <tr>
+           { !hideControls? <tr>
             <td>
                 {
                     isAdmin ? 
@@ -82,7 +84,7 @@ const LoanDetails:FC<Props> = ({
                             'Return Book'
                     }
                 </Button></td>
-            </tr>
+            </tr>: null}
         </tfoot>
     </Table>
 }

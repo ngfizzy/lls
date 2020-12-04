@@ -66,7 +66,6 @@ router.delete('/:id', adminMiddleWare, async(req, res) => {
      }
 });
 
-
 router.get('/', async(_, res) => {
     try {
         const result = await bookController.getAllBooks();

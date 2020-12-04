@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { Section } from '../shared/Section/Section';
-import { IUser } from '../../../models';
-import Api from '../api'
+import { Section } from '../../shared/Section/Section';
+import { IUser } from '../../../../models';
+import Api from '../../api'
 import { Redirect } from 'react-router-dom';
 
 export default function Login() {
