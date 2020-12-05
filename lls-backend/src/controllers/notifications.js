@@ -1,7 +1,8 @@
-const { Notification } = requires('../models');
+const { Notification } = require('../models');
 
 module.exports = {
     async getMyNotifications(userId) {
+        console.log('where USER ID ', userId)
         try {
            const notifications =  await Notification.findAll({ where: { userId }});
 
@@ -15,9 +16,11 @@ module.exports = {
         }
     },
 
-    async createNotifications(notification, userId) {
+    async createNotifications(notification) {
+        console.log('notification>>>>>>>>>>>>>>>>>>>>>>>>>>>', notification)
         try {
-            const created =  await Notification.create({...notification, userId});
+            const created =  new Notification({...notification});
+            await created.save();
  
             return {
                  error: false,

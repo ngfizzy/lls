@@ -18,7 +18,6 @@ export interface IAuthor {
     name: string;
 }
 
-
 export interface IUser {
     id: number;
     firstName: string;
@@ -31,6 +30,7 @@ export interface IUser {
 export interface ILoan  {
     id?: number;
     book: IBook;
+    user: IUser;
     bookId: number;
     userId: number;
     requestedOn: Date;
@@ -39,6 +39,12 @@ export interface ILoan  {
     expiresOn: Date;
 }
 
+export interface INotification {
+    title: string;
+    id: number;
+    userId: number;
+    details: string;
+}
 
 export type FormState =  'submitting'|
 'submitted' |

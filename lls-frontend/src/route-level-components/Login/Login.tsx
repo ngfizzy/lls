@@ -39,9 +39,6 @@ export default function Login() {
   
     }, [submitted, user])
 
-
-
-
     const  handleSubmit = async (
         e: React.SyntheticEvent<Element, Event>
     ) => {
@@ -59,7 +56,6 @@ export default function Login() {
             }
         })
     }
-
 
     if(token && user.roles ==='admin') {
         return <Redirect to="/admin" />

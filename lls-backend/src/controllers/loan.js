@@ -19,7 +19,6 @@ module.exports = {
                  };
              }
         } catch(e) {
-            console.log('>>>>>>>>>>>>>>>>', e)
            return  {
                 message: 'Something went wrong',
                 error: true

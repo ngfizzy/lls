@@ -54,7 +54,6 @@ export const Signup:FC<Props> = ({history}) => {
     };
 
    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-
         setUser(prevUser => {
             return {
                 ...prevUser,

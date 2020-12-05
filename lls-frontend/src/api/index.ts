@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IBook, ILoan, IUser } from '../../../models';
+import { IBook, ILoan, INotification, IUser } from '../../../models';
 
 class ApiFacade {
     private apiBaseUrl = 'http://localhost:8080/api'
@@ -76,7 +76,24 @@ class ApiFacade {
             url: `${this.apiBaseUrl}/books/${bookId}`,
             method: 'DELETE',
             headers: { authorization: localStorage.getItem('token')}
-        })
+        });
+    }
+
+    fetchNotifications() {
+        return axios({
+            url: `${this.apiBaseUrl}/notifications/me`,
+            method: 'GET',
+            headers: { authorization: localStorage.getItem('token')}
+        });
+    }
+
+    notifyUserToReturnBook(notification: Omit<INotification,'id'>) {
+        return axios({
+            url: `${this.apiBaseUrl}/notifications`,
+            method: 'POST',
+            data: notification,
+            headers: { authorization: localStorage.getItem('token')}
+        });
     }
 }
 

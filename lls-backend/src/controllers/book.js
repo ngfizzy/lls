@@ -46,7 +46,8 @@ module.exports =  {
     },
     async deleteBook(bookId) {
         try {
-             await Book.destroy({where: {id: bookId}})
+             await Book.destroy({where: {id: bookId}});
+
               return {
                   message: 'Book deleted successfully',
                   error: false,

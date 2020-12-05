@@ -1,14 +1,15 @@
 const { Router } = require('express');
-const notificationController = require('../controllers/notifications')
-
+const notificationController = require('../controllers/notifications');
+const adminAuthMiddleware = require('../custom-middleware/admin-auth-middleware');
 const router = Router();
+
 
 
 router.get('/me', async (req, res) => {
     const { user } = req.user;
-
     try {
-        const result = await notificationController.getMyNotifications(user.id);
+        const result = await notificationController
+            .getMyNotifications(user.id);
 
         return res.status(200).json(result)
     } catch(error) {
@@ -18,11 +19,10 @@ router.get('/me', async (req, res) => {
 });
 
 
-router.post('/:userId', (res, res) => {
-    const userId = req.param.userId;
-
+router.post('/', adminAuthMiddleware, async (req, res) => {
     try {
-        const result = await notificationController.createNotifications(notification, userId);
+        const result = await notificationController
+            .createNotifications(req.body);
 
         return res.status(200).json(result)
     } catch(error) {
@@ -31,4 +31,4 @@ router.post('/:userId', (res, res) => {
     }
 });
 
-module.exports - router;
+module.exports = router;

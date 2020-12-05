@@ -1,6 +1,6 @@
 import React from 'react'
 
-const withEllipsis = (element: JSX.Element, styleOverride: any = {})  => (
+const withEllipsis =(element: JSX.Element, styleOverride: any = {})  => (
     <div style={{
         display: 'inline-block',
         width: '100%',

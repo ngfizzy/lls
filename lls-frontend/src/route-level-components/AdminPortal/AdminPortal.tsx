@@ -1,3 +1,5 @@
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useEffect, useState } from 'react'
 import { Alert, Button, Row } from 'react-bootstrap'
 import {FormState, IBook, ILoan } from '../../../../models';
@@ -20,6 +22,7 @@ import BookForm from './components/BookForm/BookForm';
     const [shouldFetchLoans, setShouldFetchLoans] = useState(true);
     const  [shouldShowLoan, setShouldShowLoan]  = useState(false);
     const [loan, setLoan] = useState<Partial<ILoan>>();
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = (fullBook: IBook) => {
@@ -27,7 +30,6 @@ import BookForm from './components/BookForm/BookForm';
         setSelectedBook(fullBook);
     }
 
-    console.log(isLoading)
     const handleBookAddition = async (e: React.SyntheticEvent<Element, Event>, book: Partial<IBook>) => {
         e.preventDefault();
         
@@ -82,12 +84,31 @@ import BookForm from './components/BookForm/BookForm';
         } );
     }
 
-
     const showLoan = (loanToShow: Partial<ILoan>) => {
         setShouldShowLoan(true);
         setLoan(loanToShow)
     }
 
+
+    const notifyToReturn = (loan: ILoan) => {
+        const notification = {
+            userId: loan.userId,
+            title: `Book Return Reminder`,
+            details: `Book: ${loan.book.title}`
+        };
+
+
+        Api.notifyUserToReturnBook(notification)
+            .then(() => {
+                setSuccessMessage('Notifications sent successfully')
+            })
+            .catch(error => {
+                setError(error.message);
+            })
+            .finally(() => {
+                setShouldShowLoan(false)
+            }) ;
+    }
     const completeLoan = (loan: ILoan) => {
         Api.completeLoan(loan)
             .then(({data}) => {
@@ -122,6 +143,12 @@ import BookForm from './components/BookForm/BookForm';
 
                 {error? <Alert variant="warning">{error}</Alert>: null}
                 {isLoading? <Alert variant="info">Loading....</Alert>: null}
+                {successMessage?
+                    <Alert variant="info">
+                        {successMessage}
+                        <FontAwesomeIcon onClick={() => setSuccessMessage('')} icon={faTimes} /> 
+                    </Alert>: null}
+
             </Section>
         </Row>
         <Row className="ml-0 mr-0 border">
@@ -138,7 +165,6 @@ import BookForm from './components/BookForm/BookForm';
                 borrow={borrowBook}
             />
 
-
             <GeneralModal 
                 handleClose={() => setShouldShowLoan(false)}
                 title={loan?.book?.title!}
@@ -150,6 +176,7 @@ import BookForm from './components/BookForm/BookForm';
                     loan={loan as ILoan}
                     isAdmin={isAdmin}
                     completeLoan={completeLoan}
+                    notifyToReturn={notifyToReturn}
                 />
             </GeneralModal>
 
@@ -160,7 +187,10 @@ import BookForm from './components/BookForm/BookForm';
                 size="lg"
                 controls="closeOnly"
             >
-                <LoanDetails hideControls={true} loan={{book: selectedBook } as ILoan}/>
+                <LoanDetails
+                    hideControls={true}
+                    loan={{book: selectedBook } as ILoan}
+                />
             </GeneralModal>
 
             <GeneralModal

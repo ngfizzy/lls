@@ -20,7 +20,6 @@ const LoanDetails:FC<Props> = ({
     isAdmin,
     hideControls
 }) => {
-    
     const renderLoanData = (loanData: any) => {
         return Object.keys(loanData).map(key => {
             if(typeof (loanData as any)[key] === 'object') {
@@ -47,15 +46,27 @@ const LoanDetails:FC<Props> = ({
         <tbody>
             <td colSpan={2}>Book Summary</td>
             {
-                loan?.book ?
-                    renderLoanData({
-                        title: loan.book.title,
-                        summary: loan.book.summary,
-                        description: loan.book.description
-                    }) : 
-                    null
+                loan?.user ?
+                renderLoanData({
+                    id: loan.user.id,
+                    'First Name': loan.user.firstName,
+                    'Last Name': loan.user.lastName,
+                    'Email': loan.user.email
+                }) : 
+                null
             }
-            
+        </tbody>
+        <tbody>
+            <td colSpan={2}>Book Summary</td>
+            {
+                loan?.book ?
+                renderLoanData({
+                    title: loan.book.title,
+                    summary: loan.book.summary,
+                    description: loan.book.description
+                }) : 
+                null
+            }
         </tbody>
         <tfoot>
            { !hideControls? <tr>
@@ -63,13 +74,15 @@ const LoanDetails:FC<Props> = ({
                 {
                     isAdmin ? 
                         <Button
-                            onClick={() => notifyToReturn && notifyToReturn(loan)}
+                            onClick={() => {
+                                notifyToReturn && notifyToReturn(loan);
+                            }}
                             variant="secondary"
                         >
                             Notify To Return
                         </Button>
-                    : 
-                        null
+                    :
+                       null
                 }
             </td>
             <td>
