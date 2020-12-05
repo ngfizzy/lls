@@ -49,9 +49,10 @@ app.get('*', (_, res) => {
 
 app.listen(
     PORT,
-    PRIVATE_IP,
+    '0.0.0.0',
     () => (console.log(`App running on port: ${PORT} 🚀`))
 );
+
 if(PRIVATE_IP) {
 
     app.listen(
