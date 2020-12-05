@@ -4,13 +4,13 @@ LABEL author="Olufisayo Bamidele"
 WORKDIR /var/www
 COPY . /var/www
 
-RUN cd lls-frontend && npm install && npm run build
+RUN cd lls-frontend && npm install || npm run build 
 
 
 WORKDIR /var/www
 COPY . /var/www
 
-RUN cd lls-backend && npm install
+RUN cd lls-backend && npm install || true
 
 WORKDIR /var/www/lls-backend
 
