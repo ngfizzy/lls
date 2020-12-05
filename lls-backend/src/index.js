@@ -44,8 +44,14 @@ app.get('*', (_, res) => {
   
   
 
-app.listen(PORT, () => (console.log(`App running on port: ${PORT} 🚀`)))
+// app.listen(PORT, () => (console.log(`App running on port: ${PORT} 🚀`)));
 
+
+app.listen(
+    PORT,
+    PRIVATE_IP,
+    () => (console.log(`App running on port: ${PORT} 🚀`))
+);
 if(PRIVATE_IP) {
 
     app.listen(
