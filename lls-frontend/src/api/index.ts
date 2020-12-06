@@ -2,7 +2,7 @@ import axios from 'axios';
 import { IBook, ILoan, INotification, IUser } from '../../../models';
 
 class ApiFacade {
-    private apiBaseUrl = 'http://localhost:8080/api'
+    private apiBaseUrl = '/api'
 
     getAllBooks() {
         return axios({
