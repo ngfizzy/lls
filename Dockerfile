@@ -3,6 +3,7 @@ LABEL author="Olufisayo Bamidele"
 
 WORKDIR /var/www
 COPY . .
+ENV NODE_ENV=production
 RUN cd lls-frontend && npm install || true && npm run build
 
 FROM node:12.20-alpine

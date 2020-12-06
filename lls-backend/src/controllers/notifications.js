@@ -2,7 +2,6 @@ const { Notification } = require("../models");
 
 module.exports = {
   async getMyNotifications(userId) {
-    console.log("where USER ID ", userId);
     try {
       const notifications = await Notification.findAll({ where: { userId } });
 
@@ -36,17 +35,17 @@ module.exports = {
 
   async deleteNotification(notificationId) {
     try {
-      await Notification.destroy({where: {id: notificationId}});
+      await Notification.destroy({ where: { id: notificationId } });
 
       return {
-        message: 'Notification successfully deleted',
+        message: "Notification successfully deleted",
         error: true,
-      }
-    } catch(e) {
+      };
+    } catch (e) {
       return {
-        message: 'Could not delete notification',
+        message: "Could not delete notification",
         error: false,
       };
     }
-  }
+  },
 };

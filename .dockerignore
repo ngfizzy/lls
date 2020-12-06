@@ -2,4 +2,6 @@
 .elasticbeanstalk/*
 .git
 .gitignore
-node_modules
+lls-frontend/node_modules/
+lls-backend/node_modules/
+
