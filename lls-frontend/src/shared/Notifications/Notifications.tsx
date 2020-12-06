@@ -10,14 +10,13 @@ import withEllipsis from '../HOCs/withElipsis';
 const Notifications: FC  = () => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
 
-
     useEffect(() => {
       setInterval(() => {
         Api.fetchNotifications()
         .then(({data}) => {
           setNotifications(() => [...data.notifications]);
         });
-      }, 30000);
+      }, 60000);
     },[])
 
     useEffect(() => {
@@ -28,13 +27,15 @@ const Notifications: FC  = () => {
     },[])
 
   
-
     const deleteNotification = (notification:INotification) => {
-      setNotifications(nots => {
-        return nots.filter(not => not.id !== notification.id);
-      });
+        Api.deleteNotification(notification.id)
+          .then()
 
 
+        setNotifications(nots => {
+          return nots.filter(not => not.id !== notification.id);
+        });
+  
     }
       
     return <Dropdown>
@@ -42,13 +43,20 @@ const Notifications: FC  = () => {
             <Dropdown.Menu  style={{width: '20rem'}}>
             {notifications
               .map(notification => 
-                <Dropdown.Item>
-                    <div style={{width: '90%'}}>
-                      {withEllipsis(<h6>{notification.title}</h6>)}
+                <Dropdown.Item  key={notification.id}>
+                    <div style={{width: '90%', display: 'inline-block', verticalAlign: 'middle'}}>
+                      {withEllipsis(<h6 style={{fontSize: '.9rem'}}>{notification.title}</h6>, {marginBottom: '-1rem'})}
                       <br  />
-                      {withEllipsis(<p>{notification.details}</p>)}
+                      {withEllipsis(<p style={{fontSize: '.8rem'}}>{notification.details}</p>, {marginBottom: '-1rem'})}
                     </div>
-                    <FontAwesomeIcon icon={faTrash} onClick={() => deleteNotification(notification)}/>
+                    <div style={{width: '10%', height: 'fit-content', display: 'inline-block', marginLeft: '.5rem', verticalAlign: 'middle'}}>
+                      <FontAwesomeIcon style={{fontSize: '1rem', color: 'red'}} icon={faTrash} onClick={(event) => {
+                          event.stopPropagation();
+                          deleteNotification(notification);
+                      }}/>
+                    </div>
+    
+                  
                 </Dropdown.Item>
               )}
             </Dropdown.Menu>

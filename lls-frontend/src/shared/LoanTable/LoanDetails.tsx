@@ -44,7 +44,7 @@ const LoanDetails:FC<Props> = ({
             {loan? renderLoanData(loan) : null}
         </tbody>
         <tbody>
-            <td colSpan={2}>Book Summary</td>
+            <td colSpan={2}>Borrower Information</td>
             {
                 loan?.user ?
                 renderLoanData({

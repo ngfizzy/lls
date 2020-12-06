@@ -95,6 +95,14 @@ class ApiFacade {
             headers: { authorization: localStorage.getItem('token')}
         });
     }
+
+    deleteNotification(notificationId: number) {
+        return axios({
+            url: `${this.apiBaseUrl}/notifications/${notificationId}`,
+            method: 'DELETE',
+            headers: { authorization: localStorage.getItem('token')}
+        });
+    }
 }
 
 export default new ApiFacade();

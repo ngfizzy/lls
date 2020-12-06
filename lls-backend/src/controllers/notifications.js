@@ -17,7 +17,6 @@ module.exports = {
   },
 
   async createNotifications(notification) {
-    console.log("notification>>>>>>>>>>>>>>>>>>>>>>>>>>>", notification);
     try {
       const created = new Notification({ ...notification });
       await created.save();
@@ -34,4 +33,20 @@ module.exports = {
       };
     }
   },
+
+  async deleteNotification(notificationId) {
+    try {
+      await Notification.destroy({where: {id: notificationId}});
+
+      return {
+        message: 'Notification successfully deleted',
+        error: true,
+      }
+    } catch(e) {
+      return {
+        message: 'Could not delete notification',
+        error: false,
+      };
+    }
+  }
 };

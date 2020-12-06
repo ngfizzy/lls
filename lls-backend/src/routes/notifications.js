@@ -3,8 +3,6 @@ const notificationController = require('../controllers/notifications');
 const adminAuthMiddleware = require('../custom-middleware/admin-auth-middleware');
 const router = Router();
 
-
-
 router.get('/me', async (req, res) => {
     const { user } = req.user;
     try {
@@ -29,6 +27,17 @@ router.post('/', adminAuthMiddleware, async (req, res) => {
         return res.status(500)
             .json({error: true, message: 'something went wrong'})
     }
+});
+
+router.delete('/:id', async (req, res) => {
+    const result =  await notificationController
+    .deleteNotification(req.params.id);
+
+    if(!result.error) {
+        return res.json(result);
+    }
+
+    return res.status(500).json(result);
 });
 
 module.exports = router;
