@@ -49,7 +49,12 @@ const Notifications: FC  = () => {
                       <br  />
                       {withEllipsis(<p style={{fontSize: '.8rem'}}>{notification.details}</p>, {marginBottom: '-1rem'})}
                     </div>
-                    <div style={{width: '10%', height: 'fit-content', display: 'inline-block', marginLeft: '.5rem', verticalAlign: 'middle'}}>
+                    <div style={{
+                        width: '10%',
+                        height: 'fit-content',
+                        display: 'inline-block',
+                        marginLeft: '.5rem',
+                        verticalAlign: 'middle'}}>
                       <FontAwesomeIcon style={{fontSize: '1rem', color: 'red'}} icon={faTrash} onClick={(event) => {
                           event.stopPropagation();
                           deleteNotification(notification);

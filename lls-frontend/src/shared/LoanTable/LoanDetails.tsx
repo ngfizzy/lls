@@ -102,4 +102,4 @@ const LoanDetails:FC<Props> = ({
     </Table>
 }
 
-export default LoanDetails
+export default LoanDetails;
