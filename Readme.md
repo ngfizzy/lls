@@ -24,3 +24,13 @@ This a book lending system app web app built on Reactjs and Expressjs . Feature 
 
 ### Demo
 [Click Here To See The Hosted Version](https://library-loan-tracker.herokuapp.com/)
+#### Demo Accounts
+
+##### For Admin
+* email: admin@lls.com
+* password: password
+
+
+##### For Member
+* email: member@lls.com
+* password: password
