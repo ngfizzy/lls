@@ -8,6 +8,7 @@ import { AllBooks, BorrowedBooks, GeneralModal } from '../../shared';
 import LoanDetails from '../../shared/LoanTable/LoanDetails';
 import { Section } from '../../shared/Section/Section';
 import BookForm from './components/BookForm/BookForm';
+import withModal from '../../shared/HOCs/withModal';
 
 
  const AdminPortal: FC<{isAdmin: boolean, userId: number}> = ({isAdmin, userId}) => {
@@ -165,20 +166,25 @@ import BookForm from './components/BookForm/BookForm';
                 borrow={borrowBook}
             />
 
-            <GeneralModal 
-                handleClose={() => setShouldShowLoan(false)}
-                title={loan?.book?.title!}
-                show={shouldShowLoan}
-                size="lg"
-                controls="closeOnly"
-            >
-                <LoanDetails 
-                    loan={loan as ILoan}
-                    isAdmin={isAdmin}
-                    completeLoan={completeLoan}
-                    notifyToReturn={notifyToReturn}
-                />
-            </GeneralModal>
+            <>
+            {withModal({
+                Component: LoanDetails,
+                componentProps: {
+                    loan: loan,
+                    isAdmin: isAdmin,
+                    completeLoan: completeLoan,
+                    notifyToReturn: notifyToReturn
+                },
+                modalConfig: {
+                    handleClose: () => setShouldShowLoan(false),
+                    title: loan?.book?.title!,
+                    show: shouldShowLoan,
+                    size: "lg",
+                    controls: "closeOnly"
+                }
+            })
+            }
+            </>
 
             <GeneralModal 
                 handleClose={handleCloseModal} 
