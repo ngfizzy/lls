@@ -26,6 +26,7 @@ export const BorrowedBooks: FC<Props> = ({ borrows, showLoan, isAdmin }) => {
         {
           borrows.map((borrow, i) => (<ListGroup.Item
               style={{cursor: 'pointer'}}
+              className={borrows[i].approvedOn ? 'Approved': ''}
               key={i}
               onClick={(e) =>{
                 showLoan(borrows[i]);
