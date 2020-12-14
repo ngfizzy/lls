@@ -1,8 +1,10 @@
 
-import React, { FC } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 
 import { Button, Table } from 'react-bootstrap';
 import { ILoan } from '../../../../models';
+import LoanTableBody from './LoanTableBody';
+import LoanTableRows from './LoanTableRows';
 
 
 interface Props {
@@ -20,85 +22,71 @@ const LoanDetails:FC<Props> = ({
     isAdmin,
     hideControls
 }) => {
-    const renderLoanData = (loanData: any) => {
-        return Object.keys(loanData).map(key => {
-            if(typeof (loanData as any)[key] === 'object') {
-                return null
-            }
-    
-            return (<tr>
-                        <td>{key}</td>
-                        <td>{(loanData as any)[key] || 'nil'}</td>
-                    </tr>)
-                });
-    }
+   const onCompleteLoan = useCallback(() => {
+        completeLoan && completeLoan(loan);
+    }, [completeLoan, loan])
 
+    const onNotifyToReturn = useCallback(() => {
+        notifyToReturn && notifyToReturn(loan);
+    }, [notifyToReturn, loan])
+
+    const borrower = loan?.user? {
+        id: loan.user.id,
+        'First Name': loan.user.firstName,
+        'Last Name': loan.user.lastName,
+        'Email': loan.user.email
+    } : null;
+   
+    const book = loan?.book ? {
+        title: loan.book.title,
+        summary: loan.book.summary,
+        description: loan.book.description
+    } : null;
    return  <Table striped bordered hover variant="dark">
-        <thead>
-            <tr>
-                <th>Property</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            {loan? renderLoanData(loan) : null}
-        </tbody>
-        <tbody>
-            <td colSpan={2}>Borrower Information</td>
-            {
-                loan?.user ?
-                renderLoanData({
-                    id: loan.user.id,
-                    'First Name': loan.user.firstName,
-                    'Last Name': loan.user.lastName,
-                    'Email': loan.user.email
-                }) : 
-                null
-            }
-        </tbody>
-        <tbody>
-            <td colSpan={2}>Book Summary</td>
-            {
-                loan?.book ?
-                renderLoanData({
-                    title: loan.book.title,
-                    summary: loan.book.summary,
-                    description: loan.book.description
-                }) : 
-                null
-            }
-        </tbody>
-        <tfoot>
-           { !hideControls? <tr>
-            <td>
-                {
-                    isAdmin ? 
-                        <Button
-                            onClick={() => {
-                                notifyToReturn && notifyToReturn(loan);
-                            }}
-                            variant="secondary"
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <LoanTableBody> 
+                    {loan? <LoanTableRows loanData={loan} /> : <></>}
+                </LoanTableBody>
+                <LoanTableBody tableSectionTitle="Borrower's Information">
+                    { borrower ? <LoanTableRows loanData={borrower}/> : <></>}
+                </LoanTableBody>
+                <LoanTableBody tableSectionTitle="Book Summary" >
+                    {book ? <LoanTableRows loanData={book} /> : <></>}
+                </LoanTableBody>
+
+                <tfoot>
+                { !hideControls? <tr>
+                    <td>
+                        {
+                            isAdmin ? 
+                                <Button onClick={onNotifyToReturn}
+                                    variant="secondary"
+                                >
+                                    Notify To Return
+                                </Button>
+                            :
+                            null
+                        }
+                    </td>
+                    <td>
+                        <Button 
+                            variant="primary"
+                            onClick={onCompleteLoan}
                         >
-                            Notify To Return
-                        </Button>
-                    :
-                       null
-                }
-            </td>
-            <td>
-                <Button 
-                    variant="primary"
-                    onClick={() => completeLoan && completeLoan(loan)}
-                >
-                    {
-                        isAdmin?
-                            'Withdraw Book From User'
-                        :
-                            'Return Book'
-                    }
-                </Button></td>
-            </tr>: null}
-        </tfoot>
+                            {
+                                isAdmin?
+                                    'Withdraw Book From User'
+                                :
+                                    'Return Book'
+                            }
+                        </Button></td>
+                    </tr>: null}
+                </tfoot>
     </Table>
 }
 

@@ -50,3 +50,4 @@ export type FormState =  'submitting'|
 'submitted' |
 'pristine' |
 'error'
+export * from './general-modal-config.interface';

@@ -1,16 +1,11 @@
 import React from 'react'
+import { GeneralModalConfig } from '../../../../models';
 import { GeneralModal } from '../Modal/GeneralModal';
 
 interface Args {
     Component: React.FC<any>,
     componentProps?: {[key: string]: any};
-    modalConfig: {
-        handleClose: () => any;
-        title: string;
-        show: boolean;
-        size: 'sm' | 'lg' | undefined;
-        controls: 'closeOnly' | undefined;
-    }
+    modalConfig: GeneralModalConfig;
 }
 
 const withModal =({ Component, componentProps, modalConfig }: Args)  => (
@@ -18,6 +13,5 @@ const withModal =({ Component, componentProps, modalConfig }: Args)  => (
         <Component {...componentProps} />
     </GeneralModal>
 );
-
 
 export default withModal;

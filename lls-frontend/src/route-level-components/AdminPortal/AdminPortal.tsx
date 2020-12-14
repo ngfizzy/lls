@@ -1,15 +1,15 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Alert, Button, Row } from 'react-bootstrap'
 import {FormState, IBook, ILoan } from '../../../../models';
 import Api from '../../api';
-import { AllBooks, BorrowedBooks, GeneralModal } from '../../shared';
+import { AllBooks, BorrowedBooks } from '../../shared';
 import LoanDetails from '../../shared/LoanTable/LoanDetails';
 import { Section } from '../../shared/Section/Section';
 import BookForm from './components/BookForm/BookForm';
 import withModal from '../../shared/HOCs/withModal';
-
+import { defaultModalConfig } from '../../constants';
 
  const AdminPortal: FC<{isAdmin: boolean, userId: number}> = ({isAdmin, userId}) => {
     const [loans, setLoans] = useState<Partial<ILoan>[]>([]);
@@ -24,6 +24,7 @@ import withModal from '../../shared/HOCs/withModal';
     const  [shouldShowLoan, setShouldShowLoan]  = useState(false);
     const [loan, setLoan] = useState<Partial<ILoan>>();
     const [successMessage, setSuccessMessage] = useState('');
+    const [modalConfig, setModalConfig] = useState({ ...defaultModalConfig })
 
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = (fullBook: IBook) => {
@@ -42,7 +43,8 @@ import withModal from '../../shared/HOCs/withModal';
             }
 
             setAddBookState('submitted');
-            setIsBookFormOpen(false);
+            // setIsBookFormOpen(false);
+            setModalConfig(currConfig => ({ ...currConfig, show: false}))
             setRefetchBooks(() => true);
             setRefetchBooks(() => false)
         } catch(e) {
@@ -53,7 +55,6 @@ import withModal from '../../shared/HOCs/withModal';
     }
 
     useEffect(() => {
-
         if(shouldFetchLoans) {
             Api.getBorrows()
             .then(({data}) => {
@@ -87,7 +88,7 @@ import withModal from '../../shared/HOCs/withModal';
 
     const showLoan = (loanToShow: Partial<ILoan>) => {
         setShouldShowLoan(true);
-        setLoan(loanToShow)
+        setLoan(loanToShow);
     }
 
 
@@ -124,10 +125,23 @@ import withModal from '../../shared/HOCs/withModal';
             })
     }
 
-    const editBook = (book: IBook) => {
+    const editBook = useCallback((book: IBook) => {
         setSelectedBook(book);
-        setIsBookFormOpen(true);
-    }
+        setModalConfig(currConfig => ({ 
+            ...currConfig,
+            show: true,
+            title: book.title
+        }))
+    }, []);
+
+    const openBookForm = useCallback(() => {
+        setSelectedBook({} as IBook);
+        setModalConfig(currConfig => ({ 
+            ...currConfig,
+            show: true,
+            title: 'Add New Book'
+        }))
+    }, [])
 
     return ( 
     <>
@@ -136,7 +150,7 @@ import withModal from '../../shared/HOCs/withModal';
                 <Button
                     size="lg"
                     variant="primary" 
-                    onClick={e => setIsBookFormOpen(true)}>
+                    onClick={openBookForm}>
                         Add New Book
                 </Button>
             </Section>
@@ -186,36 +200,45 @@ import withModal from '../../shared/HOCs/withModal';
             }
             </>
 
-            <GeneralModal 
-                handleClose={handleCloseModal} 
-                title={selectedBook?.title!}
-                show={showModal}
-                size="lg"
-                controls="closeOnly"
-            >
-                <LoanDetails
-                    hideControls={true}
-                    loan={{book: selectedBook } as ILoan}
-                />
-            </GeneralModal>
+            <>
+                {withModal({
+                    Component: LoanDetails,
+                    componentProps: {
+                        hideControls:true,
+                        loan: {book: selectedBook  as ILoan}
+                    },
+                    modalConfig: {
+                        // handleClose: handleCloseModal,
+                        // title: selectedBook?.title!,
+                        // show: showModal,
+                        // size: 'lg',
+                        // controls: 'closeOnly'
+                        ...modalConfig
+                    },
+                })}
+            </>
 
-            <GeneralModal
-                handleClose={() => {
-                    setIsBookFormOpen(false); 
-                    setSelectedBook({});
-                } }
-                title="Add New Book"
-                show={isBookFormOpen}
-                controls="closeOnly"
-                size="lg"
-            >
-                <BookForm 
-                    formState={addBookState}
-                    selectedBook={selectedBook as IBook}
-                    error={error}
-                    handleSubmit={(e, book) => handleBookAddition(e, book)}
-                />
-            </GeneralModal>
+            <>
+                {withModal({
+                    Component: BookForm,
+                    modalConfig: {
+                        ...modalConfig,
+                        handleClose: () => {
+                            setModalConfig(currState => ({...currState, show: false})); 
+                            setSelectedBook({});
+                        },
+                    },
+                    componentProps: {
+                        formState: addBookState,
+                        selectedBook: selectedBook,
+                        error: error,
+                        handleSubmit: (
+                            e: React.SyntheticEvent<Element, Event>,
+                            book: Partial<IBook>
+                        ) => handleBookAddition(e, book)
+                    }
+                })}
+            </>
         </Row>
         </>
         )
