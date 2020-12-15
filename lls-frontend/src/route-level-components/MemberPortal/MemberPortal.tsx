@@ -12,7 +12,7 @@ import { Section } from '../../shared/Section/Section'
 import withModal from '../../shared/HOCs/withModal'
 import { defaultModalConfig } from '../../constants'
 
-import './MemberPortal.css'
+import './MemberPortal.css';
 
 export default function MemberPortal({userId}: {userId: number}) {
 
@@ -63,7 +63,6 @@ export default function MemberPortal({userId}: {userId: number}) {
         setShouldShowLoan(true);
         setLoan(loanToShow)
     }
-
 
     const completeLoan = useCallback((loan: ILoan) => {
         Api.completeLoan(loan)
@@ -136,7 +135,7 @@ export default function MemberPortal({userId}: {userId: number}) {
                 },
                 componentProps: { 
                     hideControls: true,
-                    loan: { book: {selectedBook}}
+                    loan: { book: selectedBook}
                 }
             })}
         </Row>
