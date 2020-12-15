@@ -12,8 +12,8 @@ import withModal from '../../shared/HOCs/withModal';
 import { defaultModalConfig } from '../../constants';
 
  const AdminPortal: FC<{isAdmin: boolean, userId: number}> = ({isAdmin, userId}) => {
+     const [isLoading, setIsLoading] = useState(true);
     const [loans, setLoans] = useState<Partial<ILoan>[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [selectedBook, setSelectedBook] = useState<Partial<IBook>>();
@@ -21,7 +21,7 @@ import { defaultModalConfig } from '../../constants';
     const [refetchBooks, setRefetchBooks] = useState(false)
     const [addBookState, setAddBookState]  = useState<FormState>('pristine')
     const [shouldFetchLoans, setShouldFetchLoans] = useState(true);
-    const  [shouldShowLoan, setShouldShowLoan]  = useState(false);
+    const [shouldShowLoan, setShouldShowLoan]  = useState(false);
     const [loan, setLoan] = useState<Partial<ILoan>>();
     const [successMessage, setSuccessMessage] = useState('');
     const [modalConfig, setModalConfig] = useState({ ...defaultModalConfig })
@@ -43,8 +43,7 @@ import { defaultModalConfig } from '../../constants';
             }
 
             setAddBookState('submitted');
-            // setIsBookFormOpen(false);
-            setModalConfig(currConfig => ({ ...currConfig, show: false}))
+            setIsBookFormOpen(false);
             setRefetchBooks(() => true);
             setRefetchBooks(() => false)
         } catch(e) {
@@ -86,10 +85,10 @@ import { defaultModalConfig } from '../../constants';
         } );
     }
 
-    const showLoan = (loanToShow: Partial<ILoan>) => {
+    const showLoan = useCallback((loanToShow: Partial<ILoan>) => {
         setShouldShowLoan(true);
         setLoan(loanToShow);
-    }
+    }, [])
 
 
     const notifyToReturn = (loan: ILoan) => {
@@ -114,8 +113,8 @@ import { defaultModalConfig } from '../../constants';
     const completeLoan = (loan: ILoan) => {
         Api.completeLoan(loan)
             .then(({data}) => {
-
                 setShouldFetchLoans(!data.error);
+
                 if(data.error) {
                     setError(data.message)
                 }
@@ -136,12 +135,22 @@ import { defaultModalConfig } from '../../constants';
 
     const openBookForm = useCallback(() => {
         setSelectedBook({} as IBook);
+        setIsBookFormOpen(true);
         setModalConfig(currConfig => ({ 
             ...currConfig,
             show: true,
             title: 'Add New Book'
         }))
-    }, [])
+    }, []);
+
+    const closeLoanDetails = useCallback(() => {
+        setShouldShowLoan(false);
+    }, []);
+
+    const closeBookForm = useCallback(() => {
+        setIsBookFormOpen(false);
+        setSelectedBook({});
+    }, []);
 
     return ( 
     <>
@@ -190,11 +199,10 @@ import { defaultModalConfig } from '../../constants';
                     notifyToReturn: notifyToReturn
                 },
                 modalConfig: {
-                    handleClose: () => setShouldShowLoan(false),
-                    title: loan?.book?.title!,
+                    ...modalConfig,
                     show: shouldShowLoan,
-                    size: "lg",
-                    controls: "closeOnly"
+                    handleClose: closeLoanDetails,
+                    title: loan?.book?.title!,
                 }
             })
             }
@@ -208,12 +216,13 @@ import { defaultModalConfig } from '../../constants';
                         loan: {book: selectedBook  as ILoan}
                     },
                     modalConfig: {
-                        // handleClose: handleCloseModal,
-                        // title: selectedBook?.title!,
-                        // show: showModal,
-                        // size: 'lg',
-                        // controls: 'closeOnly'
-                        ...modalConfig
+                        ...modalConfig,
+                        handleClose: handleCloseModal,
+                        title: selectedBook?.title!,
+                        show: showModal,
+                        size: 'lg',
+                        controls: 'closeOnly',
+                
                     },
                 })}
             </>
@@ -223,10 +232,8 @@ import { defaultModalConfig } from '../../constants';
                     Component: BookForm,
                     modalConfig: {
                         ...modalConfig,
-                        handleClose: () => {
-                            setModalConfig(currState => ({...currState, show: false})); 
-                            setSelectedBook({});
-                        },
+                        show: isBookFormOpen,
+                        handleClose: closeBookForm,
                     },
                     componentProps: {
                         formState: addBookState,
@@ -241,7 +248,7 @@ import { defaultModalConfig } from '../../constants';
             </>
         </Row>
         </>
-        )
+    )
 }
 
 

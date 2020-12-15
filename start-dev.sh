@@ -7,16 +7,15 @@ pids=()
 trap 'kill $(jobs -pr)' SIGINT
 
 cd lls-backend || exit
-npm install
-npm run dev &> server.log &
+yarn install
+yarn  dev &> server.log &
 
 cd ../lls-frontend || exit
-yarn install || npm install
+yarn install
 
-npm start  &> client.log &
+yarn start  &> client.log &
 
 cd .. || exit
-
 
 
 tail -n 100 -F lls-backend/server.log -F lls-frontend/client.log 

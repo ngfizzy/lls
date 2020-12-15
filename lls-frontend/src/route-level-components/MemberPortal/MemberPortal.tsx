@@ -1,17 +1,18 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Alert, Row } from 'react-bootstrap'
 import { IBook, ILoan } from '../../../../models'
-import { GeneralModal } from '../../shared'
 import Api from '../../api'
 
 import {AllBooks} from '../../shared';
 import {BorrowedBooks} from '../../shared'
 
-import './MemberPortal.css'
 import LoanDetails from '../../shared/LoanTable/LoanDetails';
 import { Section } from '../../shared/Section/Section'
+import withModal from '../../shared/HOCs/withModal'
+import { defaultModalConfig } from '../../constants'
 
+import './MemberPortal.css'
 
 export default function MemberPortal({userId}: {userId: number}) {
 
@@ -64,7 +65,7 @@ export default function MemberPortal({userId}: {userId: number}) {
     }
 
 
-    const completeLoan = (loan: ILoan) => {
+    const completeLoan = useCallback((loan: ILoan) => {
         Api.completeLoan(loan)
             .then(({data}) => {
 
@@ -80,7 +81,12 @@ export default function MemberPortal({userId}: {userId: number}) {
                 setShouldShowLoan(false);
                 setLoan({});
             });
-    }
+    }, []);
+
+    const closeLoanDialog = useCallback(() => {
+        setShouldShowLoan(false);
+    }, []);
+
 
     return (
         <>
@@ -101,29 +107,38 @@ export default function MemberPortal({userId}: {userId: number}) {
                 borrow={borrowBook}
             />
 
-            <GeneralModal 
-                handleClose={() => setShouldShowLoan(false)}
-                title={loan?.book?.title!}
-                show={shouldShowLoan}
-                size="lg"
-                controls="closeOnly"
-            >
-                <LoanDetails 
-                    loan={loan as ILoan}
-                    completeLoan={completeLoan}
-                />
-            </GeneralModal>
+            {withModal({
+                Component: LoanDetails,
+                modalConfig: {
+                    ...defaultModalConfig,
+                    handleClose: closeLoanDialog,
+                    show: shouldShowLoan,
+                    title: loan?.book?.title!
+                },
+                componentProps: { loan, completeLoan }
+            })}
 
-            <GeneralModal 
-                handleClose={handleCloseModal} 
-                title={selectedBook?.book?.title!}
-                show={showModal}
-                size="lg"
-            >
-                <LoanDetails
-                    hideControls={true} 
-                    loan={{book: selectedBook} as ILoan} />
-            </GeneralModal>
+            {withModal({
+                Component: LoanDetails,
+                modalConfig: {
+                    ...defaultModalConfig,
+                    handleClose: handleCloseModal,
+                    show: showModal,
+                },
+            })}
+
+            {withModal({
+                Component: LoanDetails,
+                modalConfig: {
+                    ...defaultModalConfig,
+                    handleClose: handleCloseModal,
+                    show: showModal,
+                },
+                componentProps: { 
+                    hideControls: true,
+                    loan: { book: {selectedBook}}
+                }
+            })}
         </Row>
         </>
     )

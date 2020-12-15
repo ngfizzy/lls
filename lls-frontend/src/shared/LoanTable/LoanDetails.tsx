@@ -1,5 +1,5 @@
 
-import React, { FC, memo, useCallback } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { Button, Table } from 'react-bootstrap';
 import { ILoan } from '../../../../models';
