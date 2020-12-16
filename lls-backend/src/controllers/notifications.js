@@ -1,4 +1,4 @@
-const { Notification } = require("../models");
+const { Notification } = require('../models');
 
 module.exports = {
   async getMyNotifications(userId) {
@@ -7,11 +7,11 @@ module.exports = {
 
       return {
         error: false,
-        message: "notifications fetched successfully",
+        message: 'notifications fetched successfully',
         notifications,
       };
     } catch (e) {
-      return { error: true, message: "could not fetch notifications" };
+      return { error: true, message: 'could not fetch notifications' };
     }
   },
 
@@ -22,13 +22,13 @@ module.exports = {
 
       return {
         error: false,
-        message: "notifications fetched successfully",
+        message: 'notifications fetched successfully',
         notification: created,
       };
     } catch (e) {
       return {
         error: true,
-        message: "could not fetch notifications",
+        message: 'could not fetch notifications',
       };
     }
   },
@@ -38,12 +38,12 @@ module.exports = {
       await Notification.destroy({ where: { id: notificationId } });
 
       return {
-        message: "Notification successfully deleted",
+        message: 'Notification successfully deleted',
         error: true,
       };
     } catch (e) {
       return {
-        message: "Could not delete notification",
+        message: 'Could not delete notification',
         error: false,
       };
     }

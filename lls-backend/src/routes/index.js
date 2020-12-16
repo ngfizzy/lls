@@ -3,4 +3,4 @@ module.exports = {
     userRoutes: require('./users'),
     loans: require('./loans'),
     notifications: require('./notifications'),
-}
+};

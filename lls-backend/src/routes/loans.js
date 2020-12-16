@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const loanController = require('../controllers/loan');
 const isAdmin = require('../helpers/is-admin');
+const respond = require('../helpers/response-helper');
 const router = Router();
 
 Date.prototype.addDays = function (days) {
@@ -9,28 +10,20 @@ Date.prototype.addDays = function (days) {
 	return date;
 };
 
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
 	const {user} = req;
 
-	try {
-		let result;
-		if (isAdmin(user)) {
-			result = await loanController.getAllLoans();
-		} else {
-			result = await loanController.getUserLoans(user.user);
-		}
-
-		if (!result.error) {
-			return res.json(result);
-		}
-
-		return res.status(404).json(result);
-	} catch (e) {
-		return res.status(500).json({
-			error: true,
-			message: e.message,
-		});
+	if(isAdmin(user)) {
+		
+		return respond(res)
+			.using(loanController.getAllLoans)
+			.withPayload();
 	}
+
+	return respond(res)
+		.using(loanController.getUserLoans)
+		.withPayload(user.user);
+
 });
 
 router.post('/', async (req, res) => {
@@ -42,39 +35,25 @@ router.post('/', async (req, res) => {
 
 	loan.expiredOn = date;
 
-	try {
-		const result = await loanController.createLoan(loan);
-
-		if (!result.error) {
-			return res.json(result);
-		}
-
-		return res.status(400).json(result);
-	} catch (e) {
-		console.error('error occurred', error);
-		return res.status(500).json({
-			error: true,
-			message: e.message,
-		});
-	}
+	respond(res)
+		.using(loanController.createLoan)
+		.withWithPayload(loan);
 });
 
-router.delete('/:id', async (req, res) => {
-	try {
-		const result = await loanController.completeLoan(req.params.id);
+router.patch('/:id/approval', async (req, res) => {
+	const {id} = req.params;
 
-		if (!result.error) {
-			return res.json(result);
-		}
+	return respond(res)
+		.using(loanController.approveLoan)
+		.withPayload(id);
+});
 
-		return res.status(400).json(result);
-	} catch (e) {
-		console.error('error occurred', error);
-		return res.status(500).json({
-			error: true,
-			message: e.message,
-		});
-	}
+router.delete('/:id', async(req, res) => {
+	const { id } = req.params;
+
+	return respond(res)
+		.using(loanController.completeLoan)
+		.withPayload(id);
 });
 
 module.exports = router;

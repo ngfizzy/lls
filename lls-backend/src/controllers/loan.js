@@ -1,12 +1,14 @@
+const persistThisContext  = require('../helpers/persist-this-context');
 const {Loan, Book, User} = require('../models');
 
-module.exports = {
-	async getAllLoans() {
+const loanController = {
+	async getAllLoans (){
 		try {
 			const loans = await Loan.findAll();
 
 			if (loans) {
 				const bookLoans = await this.getLoanRelations(loans);
+
 				return {
 					loans: bookLoans,
 					message: 'loans fetched successfully',
@@ -20,12 +22,12 @@ module.exports = {
 			}
 		} catch (e) {
 			return {
-				message: 'Something went wrong',
+				message: e.message,
 				error: true,
 			};
 		}
 	},
-	getLoanRelations(loans) {
+	getLoanRelations(loans){
 		return Promise.all(
 			loans.map(async (loan) => {
 				const book = await Book.findOne({where: {id: loan.bookId}});
@@ -40,7 +42,7 @@ module.exports = {
 		);
 	},
 
-	async getUserLoans(user) {
+	getUserLoans: async (user)  => {
 		try {
 			const loans = await Loan.findAll({where: {userId: user.id}});
 
@@ -82,6 +84,25 @@ module.exports = {
 		}
 	},
 
+	async approveLoan(loanId) {
+		try {
+			const loan = await Loan.findOne({ where: { id: loanId }});
+			loan.approvedOn = new Date();
+			await loan.save();
+
+			return {
+				loan,
+				message: 'Loan approved successfully',
+				error: false,
+			};
+		} catch(e) {
+			return {
+				message: e.message,
+				error: true,
+			};
+		}
+	},
+
 	async completeLoan(loanId) {
 		try {
 			await Loan.destroy({where: {id: loanId}});
@@ -98,3 +119,6 @@ module.exports = {
 		}
 	},
 };
+
+
+module.exports = persistThisContext(loanController);

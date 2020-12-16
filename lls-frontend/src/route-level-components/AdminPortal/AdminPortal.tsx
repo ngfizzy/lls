@@ -91,7 +91,7 @@ import { defaultModalConfig } from '../../constants';
     }, [])
 
 
-    const notifyToReturn = (loan: ILoan) => {
+    const notifyToReturn = useCallback((loan: ILoan) => {
         const notification = {
             userId: loan.userId,
             title: `Book Return Reminder`,
@@ -109,8 +109,8 @@ import { defaultModalConfig } from '../../constants';
             .finally(() => {
                 setShouldShowLoan(false)
             }) ;
-    }
-    const completeLoan = (loan: ILoan) => {
+    }, []);
+    const completeLoan = useCallback((loan: ILoan) => {
         Api.completeLoan(loan)
             .then(({data}) => {
                 setShouldFetchLoans(!data.error);
@@ -121,8 +121,10 @@ import { defaultModalConfig } from '../../constants';
             })
             .catch((error: { message: React.SetStateAction<string>; }) => {
                 setError(error.message)
+            }).finally(() => {
+                setShouldShowLoan(false)
             })
-    }
+    }, []);
 
     const editBook = useCallback((book: IBook) => {
         setSelectedBook(book);

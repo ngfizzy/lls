@@ -15,14 +15,12 @@ import { defaultModalConfig } from '../../constants'
 import './MemberPortal.css';
 
 export default function MemberPortal({userId}: {userId: number}) {
-
     const [loans, setBorrows] = useState<ILoan[]>([]);
     const [shouldFetchLoans, setShouldFetchLoans] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [shouldShowLoan, setShouldShowLoan]  = useState(false);
     const [loan, setLoan] = useState<Partial<ILoan>>();
-
 
     const [showModal, setShowModal] = useState(false);
     const [selectedBook, setSelectedBook] = useState<Partial<ILoan>>();

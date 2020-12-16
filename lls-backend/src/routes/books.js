@@ -53,16 +53,16 @@ router.delete('/:id', adminMiddleWare, async(req, res) => {
         const result = await bookController.deleteBook(bookId);
  
         if(!result.error) {
-            return res.status(201).json(result)
+            return res.status(201).json(result);
         }
  
-        return res.status(400).json(result)
+        return res.status(400).json(result);
  
      } catch(e) {
          return res.status(500).json({
              error: true,
              message: e.message,
-         });;
+         });
      }
 });
 

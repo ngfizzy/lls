@@ -21,7 +21,7 @@ router.post('/signup', async (req, res) => {
                     return res.status(500).json({
                         message: 'Something went wrong',
                         error: true
-                    })
+                    });
                 } else {
                     result.token = token;
                     return res.status(201).json(result);
@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
     const result = await usersController.login({email, password});
 
     if(!result.error) {
-        return res.status(200).json(result)
+        return res.status(200).json(result);
     }
     
     return;
