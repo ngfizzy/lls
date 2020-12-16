@@ -126,6 +126,16 @@ class ApiFacade {
 			},
 		});
 	}
+
+	approveLoan(loanId: number) {
+		return axios({
+			url: `${this.apiBaseUrl}/loans/${loanId}/approval`,
+			method: 'PATCH',
+			headers: {
+				authorization: localStorage.getItem('token')
+			}
+		});
+	}
 }
 
 export default new ApiFacade();

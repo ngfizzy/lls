@@ -2,14 +2,14 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-    const bearerToken = req.headers['authorization'];
+    const bearerToken = req.headers.authorization;
     const tokenOnly = (bearerToken || '').split('Bearer ')[1];
 
     if(!tokenOnly) {
         return res.status(401).json({
             message: 'Unauthorized',
             error: true
-        })
+        });
     }
 
     try {
@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
 
         req.user = decoded;
 
-        next()
+        next();
     } catch(e) { 
         return res.status(403).json({
             message: 'Forbidden',

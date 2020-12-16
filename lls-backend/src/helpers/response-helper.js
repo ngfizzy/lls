@@ -1,11 +1,11 @@
-const responder =  (res) => {
+const respond =  (res) => {
     return {
         using(controllerFn) {
             if(!controllerFn) {
                 throw new Error('Expected a callback function');
             }
 
-            this.controllerFn = () => controllerFn;
+            this.controllerFn = controllerFn;
         
             return this; 
         },
@@ -15,7 +15,7 @@ const responder =  (res) => {
             }
 
             try {
-                const result =  await this.controllerFn()(payload);
+                const result =  await this.controllerFn(payload);
 
                 if(!result.error) {
                     return res.json(result);
@@ -32,4 +32,4 @@ const responder =  (res) => {
     };
 }
 
-module.exports = responder;
+module.exports = respond;

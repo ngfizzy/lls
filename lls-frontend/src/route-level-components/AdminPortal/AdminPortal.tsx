@@ -30,11 +30,24 @@ import { defaultModalConfig } from '../../constants';
     const handleShowModal = (fullBook: IBook) => {
         setShowModal(true);
         setSelectedBook(fullBook);
-    }
+    };
 
-    const handleBookAddition = async (e: React.SyntheticEvent<Element, Event>, book: Partial<IBook>) => {
+    const approveLoan = useCallback(async (loan: ILoan) => {
+        try {   
+           await Api.approveLoan(loan.id!);
+
+           setShouldFetchLoans(true);
+        } catch(e) {
+            setError(e.message)
+        } finally {
+
+           setShouldFetchLoans(false); 
+        }
+    }, []);
+
+    const handleBookAddition = useCallback(async (e: React.SyntheticEvent<Element, Event>, book: Partial<IBook>) => {
         e.preventDefault();
-        
+
         try {
             if(book.id) {
                 await Api.editBook(book as IBook);
@@ -51,7 +64,7 @@ import { defaultModalConfig } from '../../constants';
             setAddBookState('error');
             setRefetchBooks(() => false);
         } 
-    }
+    }, [])
 
     useEffect(() => {
         if(shouldFetchLoans) {
@@ -195,10 +208,11 @@ import { defaultModalConfig } from '../../constants';
             {withModal({
                 Component: LoanDetails,
                 componentProps: {
-                    loan: loan,
-                    isAdmin: isAdmin,
-                    completeLoan: completeLoan,
-                    notifyToReturn: notifyToReturn
+                    loan,
+                    isAdmin,
+                    completeLoan,
+                    approveLoan,
+                    notifyToReturn
                 },
                 modalConfig: {
                     ...modalConfig,

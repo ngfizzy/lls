@@ -30,9 +30,7 @@ router.post('/', async (req, res) => {
 	const {
 		body: {days, ...loan},
 	} = req;
-
 	const date = new Date().addDays(days);
-
 	loan.expiredOn = date;
 
 	respond(res)
